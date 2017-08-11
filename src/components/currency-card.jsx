@@ -1,7 +1,9 @@
 import React from 'react';
 import glamorous, {Div} from 'glamorous';
 
-const cardBG = '#FFFDDF';
+import { colors } from '../styles/variables';
+
+const cardBG = colors.paperYellow;
 
 const CardContainer = glamorous.div({
   padding: '20px 45px',
