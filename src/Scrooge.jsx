@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { fetchCurrencies } from './actions';
 import glamorous from 'glamorous'
-import CurrencyCard from './components/currency-card.jsx';
+import MainHeader from './components/main-header';
+import CurrencyCard from './components/currency-card';
 
 
 const Container = glamorous.div({
@@ -13,6 +14,7 @@ const Container = glamorous.div({
 class Scrooge extends React.Component {
   constructor(props) {
     super(props);
+    this.renderContent = this.renderContent.bind(this);
   }
 
   componentDidMount() {
@@ -20,16 +22,27 @@ class Scrooge extends React.Component {
     dispatch(fetchCurrencies());
   }
 
-  render() {
+  renderContent() {
     const { currencies, error, isFetching } = this.props;
     if (isFetching) return (<Container textAlign="center">Fetching data... </Container>);
-    return (<Container>
+    return (
+      <Container>
         {
           error
           ? <div className="error">{error}</div>
           : currencies && currencies.map(cur => <CurrencyCard currency={cur} />)
         }
-      </Container>);
+      </Container>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <MainHeader/>
+        {this.renderContent()}
+      </div>
+    );
   }
 }
 
