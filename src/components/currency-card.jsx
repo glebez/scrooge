@@ -1,11 +1,14 @@
 import React from 'react';
-import glamorous, {Div} from 'glamorous';
-
+import glamorous, {Div, Span} from 'glamorous';
 import { colors } from '../styles/variables';
+
+import VerticalDiff from './vertical-diff';
 
 const cardBG = colors.paperYellow;
 
-const CardContainer = glamorous.div({
+const CardBody = glamorous.div({
+  display: 'flex',
+  justifyContent: 'space-between',
   padding: '20px 45px',
   background: cardBG,
   background: `linear-gradient(135deg, transparent 20px, ${cardBG} 0)`,
@@ -18,11 +21,20 @@ const CardHeading = glamorous.h1({
   fontWeight: 'normal'
 });
 
+const CardValue = glamorous.p({
+  margin: 0
+}, ({size = 'regular'}) => ({
+  fontSize: size === 'big' ? '36px' : '18px'
+}));
+
+const mr10 = { marginRight: '10px'};
 
 class CurrencyCard extends React.Component {
   render() {
     const {
       name,
+      symbol,
+      rank,
       price_eur,
       percent_change_1h,
       percent_change_24h,
@@ -30,29 +42,31 @@ class CurrencyCard extends React.Component {
     } = this.props.currency;
     return (
       <Div marginBottom='45px'>
-        <CardHeading>{name}</CardHeading>
-        <CardContainer>
-          <Div display="flex" textAlign="center" justifyContent="space-between">
-            <div>
-              <p>Value</p>
-              <p>{parseFloat(price_eur).toFixed(3) + ' EUR'}</p>
-            </div>
-            <Div display="flex" flexBasis="60%" justifyContent="space-around">
-              <div>
-                <p>1h</p>
-                <p>{percent_change_1h}</p>
-              </div>
-              <div>
-                <p>24h</p>
-                <p>{percent_change_24h}</p>
-              </div>
-              <div>
-                <p>7d</p>
-                <p>{percent_change_7d}</p>
-              </div>
-            </Div>
+        <Div display="flex" alignItems="baseline">
+          <CardHeading css={mr10}>{name}</CardHeading>
+          <Span css={mr10}>{symbol}</Span>
+          <Span css={mr10}>{'#' + rank}</Span>
+        </Div>
+        <CardBody>
+          <div>
+            <p>Value</p>
+            <CardValue size="big">{parseFloat(price_eur).toFixed(3) + ' EUR'}</CardValue>
+          </div>
+          <Div display="flex" flexBasis="60%" justifyContent="space-around">
+            <VerticalDiff
+              label="1h"
+              value={percent_change_1h}
+            />
+            <VerticalDiff
+              label="24h"
+              value={percent_change_24h}
+            />
+            <VerticalDiff
+              label="7d"
+              value={percent_change_7d}
+            />
           </Div>
-        </CardContainer>
+        </CardBody>
       </Div>
     );
   }

@@ -18,7 +18,7 @@ export default class MainHeader extends React.Component {
   render() {
     return (
       <HeaderContainer>
-        <Div className={textCenter}>
+        <Div className={`${textCenter}`}>
           <Logo src={ScroogeLogo} />
         </Div>
       </HeaderContainer>

@@ -27,6 +27,5 @@ function getError(action) {
 }
 
 function getCurrencies(action) {
-  console.log(action);
   return action.payload && action.payload.data && action.payload.data;
 }
