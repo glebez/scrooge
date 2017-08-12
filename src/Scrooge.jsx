@@ -31,6 +31,7 @@ class Scrooge extends React.Component {
           error
           ? <div className="error">{error}</div>
           : currencies && currencies.map(cur => <CurrencyCard currency={cur} />)
+          : currencies && currencies.map(cur => <CurrencyCard key={cur.symbol + cur.rank} currency={cur} />)
         }
       </Container>
     );

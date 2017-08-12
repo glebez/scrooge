@@ -12,15 +12,19 @@ const VerticalDiffContainer = glamorous.div({
 const DiffNumber = glamorous.p({
   fontSize: '24px'
 }, ({negative}) => ({
-  color: negative ? colors.cashGreen : colors.rottenRed
+  color: negative ? colors.rottenRed : colors.cashGreen
 }));
+
+function isNegative(input) {
+  return input && parseFloat(input) < 0;
+}
 
 
 export default function VerticalDiff({label, value}) {
   return (
     <VerticalDiffContainer>
       <p>{label}</p>
-      <DiffNumber negative={value && value.startsWith("-")}>
+      <DiffNumber negative={isNegative(value)}>
         {value}
       </DiffNumber>
     </VerticalDiffContainer>
