@@ -31,6 +31,7 @@ const mr10 = { marginRight: '10px'};
 
 class CurrencyCard extends React.Component {
   render() {
+    const { number, currency } = this.props;
     const {
       name,
       symbol,
@@ -39,7 +40,11 @@ class CurrencyCard extends React.Component {
       percent_change_1h,
       percent_change_24h,
       percent_change_7d
-    } = this.props.currency;
+    } = currency;
+
+    const mainLabel = number ? 'Value' : 'Value per coin';
+    const coinValue = parseFloat(price_eur);
+    const totalValue = number ? number * coinValue : coinValue;
     return (
       <Div marginBottom='45px'>
         <Div display="flex" alignItems="baseline">
@@ -49,8 +54,8 @@ class CurrencyCard extends React.Component {
         </Div>
         <CardBody>
           <div>
-            <p>Value</p>
-            <CardValue size="big">{parseFloat(price_eur).toFixed(3) + ' EUR'}</CardValue>
+            <p>{mainLabel}</p>
+            <CardValue size="big">{parseFloat(totalValue).toFixed(3) + ' EUR'}</CardValue>
           </div>
           <Div display="flex" flexBasis="60%" justifyContent="space-around">
             <VerticalDiff

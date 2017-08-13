@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { fetchCurrencies } from './actions';
+import { fetchCurrencies, fetchPortfolio } from './actions';
 import glamorous from 'glamorous'
 import MainHeader from './components/main-header';
-import CurrencyCard from './components/currency-card';
+import Portfolio from './components/portfolio';
 
 
 const Container = glamorous.div({
@@ -20,20 +20,16 @@ class Scrooge extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchCurrencies());
+    dispatch(fetchPortfolio());
   }
 
   renderContent() {
-    const { currencies, error, isFetching } = this.props;
-    if (isFetching) return (<Container textAlign="center">Fetching data... </Container>);
+    const { currencies: { all, error, isFetching }, portfolio  } = this.props;
+    if (isFetching || portfolio.isFetching) return 'Fetching data...';
     return (
-      <Container>
-        {
           error
           ? <div className="error">{error}</div>
-          : currencies && currencies.map(cur => <CurrencyCard currency={cur} />)
-          : currencies && currencies.map(cur => <CurrencyCard key={cur.symbol + cur.rank} currency={cur} />)
-        }
-      </Container>
+          : <Portfolio items={portfolio.items} currencies={all} />
     );
   }
 
@@ -41,10 +37,12 @@ class Scrooge extends React.Component {
     return (
       <div>
         <MainHeader/>
-        {this.renderContent()}
+        <Container>
+          {this.renderContent()}
+        </Container>
       </div>
     );
   }
 }
 
-export default connect(state => state.currencies)(Scrooge)
+export default connect(state => state)(Scrooge)
