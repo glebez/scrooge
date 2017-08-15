@@ -1,10 +1,10 @@
-import Actions from './const.js';
 import axios from 'axios';
+import Actions from './const';
 
 export function fetchCurrencies() {
   return {
     type: Actions.FETCH_CURRENCIES,
-    promise: axios.get('https://api.coinmarketcap.com/v1/ticker/?convert=EUR')
+    promise: axios.get('https://api.coinmarketcap.com/v1/ticker/?convert=EUR'),
   };
 }
 
@@ -15,19 +15,19 @@ const mockPortfolio = {
     currencies: {
       BTC: {
         number: 0.1234,
-        purchaseCost: 100000
+        purchaseCost: 100000,
       },
       ETH: {
         number: 2,
-        purchaseCost: 70000
-      }
-    }
-  }
+        purchaseCost: 70000,
+      },
+    },
+  },
 };
 
 export function fetchPortfolio() {
   return {
     type: Actions.FETCH_PORTFOLIO,
-    promise: Promise.resolve(mockPortfolio)
+    promise: Promise.resolve(mockPortfolio),
   };
 }

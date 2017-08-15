@@ -1,13 +1,13 @@
 import { css } from 'glamor';
 
 export const textCenter = css({
-  textAlign: 'center'
+  textAlign: 'center',
 });
 
 export const textLeft = css({
-  textAlign: 'left'
+  textAlign: 'left',
 });
 
 export const textRight = css({
-  textAlign: 'right'
+  textAlign: 'right',
 });

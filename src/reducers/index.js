@@ -4,7 +4,7 @@ import portfolio from './portfolio';
 
 const scroogeApp = combineReducers({
   currencies,
-  portfolio
-})
+  portfolio,
+});
 
-export default scroogeApp
+export default scroogeApp;
