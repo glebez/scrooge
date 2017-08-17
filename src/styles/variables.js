@@ -5,6 +5,8 @@ export const colors = {
   aqua: '#9EFFDD',
   cashGreen: '#599716',
   rottenRed: '#B76161',
+  bloodyRed: '#ed382d',
+  ketchupRed: '#ac241c',
 };
 
 export default colors;
