@@ -33,6 +33,7 @@
     "axios": "^0.16.2",
     "glamor": "^2.20.39",
     "glamorous": "^4.1.0",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",

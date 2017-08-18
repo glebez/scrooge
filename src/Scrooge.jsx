@@ -1,17 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCurrencies, fetchPortfolio } from './actions';
 import glamorous from 'glamorous';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { fetchCurrencies, fetchPortfolio } from './actions';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
 
 const Container = glamorous.div({
   maxWidth: '700px',
-  margin: '0 auto'
+  margin: '0 auto',
 });
 
 class Scrooge extends React.Component {
@@ -27,12 +28,12 @@ class Scrooge extends React.Component {
   }
 
   renderPortfolio() {
-    const { currencies: { all, error, isFetching }, portfolio  } = this.props;
+    const { currencies: { all, error, isFetching }, portfolio } = this.props;
     if (isFetching || portfolio.isFetching) return (<p>Fetching data...</p>);
     return (
-          error
-          ? <div className="error">{error}</div>
-          : <Portfolio items={portfolio.items} currencies={all} />
+      error
+        ? <div className="error">{error}</div>
+        : <Portfolio items={portfolio.items} currencies={all} />
     );
   }
 
@@ -58,11 +59,11 @@ class Scrooge extends React.Component {
         <div>
           <MainHeader/>
           <Container>
-           <Route path="/" exact render={this.renderPortfolio} />
-           <Route path="/login" exact render={this.renderLogin} />
-           <Route path="/signup" exact render={this.renderSignup} />
-           <Route path="/market" exact render={this.renderMarket} />
-           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
+            <Route path="/" exact render={this.renderPortfolio} />
+            <Route path="/login" exact render={this.renderLogin} />
+            <Route path="/signup" exact render={this.renderSignup} />
+            <Route path="/market" exact render={this.renderMarket} />
+            <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
           </Container>
         </div>
       </Router>
@@ -70,4 +71,10 @@ class Scrooge extends React.Component {
   }
 }
 
-export default connect(state => state)(Scrooge)
+Scrooge.propTypes = {
+  portfolio: PropTypes.object,
+  currencies: PropTypes.object,
+  dispatch: PropTypes.func,
+};
+
+export default connect(state => state)(Scrooge);

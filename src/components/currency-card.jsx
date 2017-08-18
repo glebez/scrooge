@@ -1,5 +1,6 @@
 import React from 'react';
-import glamorous, {Div, Span} from 'glamorous';
+import glamorous, { Div, Span } from 'glamorous';
+import PropTypes from 'prop-types';
 import { colors } from '../styles/variables';
 
 import VerticalDiff from './vertical-diff';
@@ -11,23 +12,23 @@ const CardBody = glamorous.div({
   justifyContent: 'space-between',
   padding: '20px 45px',
   background: cardBG,
-  background: `linear-gradient(135deg, transparent 20px, ${cardBG} 0)`,
-  borderRadius: '5px '
+  background: `linear-gradient(135deg, transparent 20px, ${cardBG} 0)`, // eslint-disable-line no-dupe-keys
+  borderRadius: '5px ',
 });
 
 const CardHeading = glamorous.h1({
   marginBottom: '5px',
   fontSize: '36px',
-  fontWeight: 'normal'
+  fontWeight: 'normal',
 });
 
 const CardValue = glamorous.p({
-  margin: 0
-}, ({size = 'regular'}) => ({
-  fontSize: size === 'big' ? '36px' : '18px'
+  margin: 0,
+}, ({ size = 'regular' }) => ({
+  fontSize: size === 'big' ? '36px' : '18px',
 }));
 
-const mr10 = { marginRight: '10px'};
+const mr10 = { marginRight: '10px' };
 
 class CurrencyCard extends React.Component {
   render() {
@@ -39,7 +40,7 @@ class CurrencyCard extends React.Component {
       price_eur,
       percent_change_1h,
       percent_change_24h,
-      percent_change_7d
+      percent_change_7d,
     } = currency;
 
     const mainLabel = number ? 'Value' : 'Value per coin';
@@ -50,12 +51,12 @@ class CurrencyCard extends React.Component {
         <Div display="flex" alignItems="baseline">
           <CardHeading css={mr10}>{name}</CardHeading>
           <Span css={mr10}>{symbol}</Span>
-          <Span css={mr10}>{'#' + rank}</Span>
+          <Span css={mr10}>{`#${rank}`}</Span>
         </Div>
         <CardBody>
           <div>
             <p>{mainLabel}</p>
-            <CardValue size="big">{parseFloat(totalValue).toFixed(3) + ' EUR'}</CardValue>
+            <CardValue size="big">{`${parseFloat(totalValue).toFixed(3)} EUR`}</CardValue>
           </div>
           <Div display="flex" flexBasis="60%" justifyContent="space-around">
             <VerticalDiff
@@ -76,5 +77,10 @@ class CurrencyCard extends React.Component {
     );
   }
 }
+
+CurrencyCard.propTypes = {
+  number: PropTypes.number,
+  currency: PropTypes.object,
+};
 
 export default CurrencyCard;

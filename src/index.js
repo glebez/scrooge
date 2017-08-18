@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { middleware as reduxPackMiddleware } from 'redux-pack';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import Scrooge from './Scrooge.jsx';
+import Scrooge from './Scrooge';
 import scroogeApp from './reducers';
 import './styles/globals';
 

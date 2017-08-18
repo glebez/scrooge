@@ -1,8 +1,6 @@
 import React from 'react';
-import glamorous, { Div } from 'glamorous';
-import { css } from 'glamor';
+import glamorous from 'glamorous';
 import { colors } from '../styles/variables';
-import { textCenter } from '../styles/utils';
 import ScroogeLogo from '../styles/logo.svg';
 import Link from './link';
 
@@ -37,17 +35,16 @@ const NavItem = glamorous.li({
   marginRight: '10px',
 });
 
-export default class MainHeader extends React.Component {
-  render() {
-    return (
-      <HeaderContainer>
-        <SideBlock />
-        <CenterBlock>
-          <Link to="/">
-            <Logo src={ScroogeLogo} />
-          </Link>
-        </CenterBlock>
-        <SideBlock>
+export default function MainHeader() {
+  return (
+    <HeaderContainer>
+      <SideBlock />
+      <CenterBlock>
+        <Link to="/">
+          <Logo src={ScroogeLogo} />
+        </Link>
+      </CenterBlock>
+      <SideBlock>
         <nav>
           <NavList>
             <NavItem>
@@ -58,8 +55,7 @@ export default class MainHeader extends React.Component {
             </NavItem>
           </NavList>
         </nav>
-        </SideBlock>
-      </HeaderContainer>
-    );
-  }
+      </SideBlock>
+    </HeaderContainer>
+  );
 }

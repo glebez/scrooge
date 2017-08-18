@@ -1,18 +1,19 @@
 import React from 'react';
 import glamorous from 'glamorous';
+import PropTypes from 'prop-types';
 import { colors } from '../styles/variables';
 
 const VerticalDiffContainer = glamorous.div({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  textAlign: 'center'
+  textAlign: 'center',
 });
 
 const DiffNumber = glamorous.p({
-  fontSize: '24px'
-}, ({negative}) => ({
-  color: negative ? colors.rottenRed : colors.cashGreen
+  fontSize: '24px',
+}, ({ negative }) => ({
+  color: negative ? colors.rottenRed : colors.cashGreen,
 }));
 
 function isNegative(input) {
@@ -20,7 +21,7 @@ function isNegative(input) {
 }
 
 
-export default function VerticalDiff({label, value}) {
+function VerticalDiff({ label, value }) {
   return (
     <VerticalDiffContainer>
       <p>{label}</p>
@@ -30,3 +31,10 @@ export default function VerticalDiff({label, value}) {
     </VerticalDiffContainer>
   );
 }
+
+VerticalDiff.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+};
+
+export default VerticalDiff;

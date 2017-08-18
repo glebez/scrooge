@@ -9,8 +9,8 @@ const Link = glamorousLinkFactory({
   textDecoration: 'none',
   color: colors.bloodyRed,
   ':hover': {
-    color: colors.ketchupRed
-  }
-})
+    color: colors.ketchupRed,
+  },
+});
 
 export default Link;
