@@ -4,7 +4,8 @@
   "description": "An app to track your cryptocoins value",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build:client": "webpack --config webpack.client.config.js",
+    "build:server": "webpack --config webpack.server.config.js",
     "start": "webpack-dev-server --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

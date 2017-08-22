@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import glamorous from 'glamorous';
 import {
-  BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -55,18 +54,16 @@ class Scrooge extends React.Component {
 
   render() {
     return (
-      <Router>
-        <div>
-          <MainHeader/>
-          <Container>
-            <Route path="/" exact render={this.renderPortfolio} />
-            <Route path="/login" exact render={this.renderLogin} />
-            <Route path="/signup" exact render={this.renderSignup} />
-            <Route path="/market" exact render={this.renderMarket} />
-            <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
-          </Container>
-        </div>
-      </Router>
+      <div>
+        <MainHeader/>
+        <Container>
+          <Route path="/" exact render={this.renderPortfolio} />
+          <Route path="/login" exact render={this.renderLogin} />
+          <Route path="/signup" exact render={this.renderSignup} />
+          <Route path="/market" exact render={this.renderMarket} />
+          <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
+        </Container>
+      </div>
     );
   }
 }
