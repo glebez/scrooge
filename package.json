@@ -4,9 +4,9 @@
   "description": "An app to track your cryptocoins value",
   "main": "index.js",
   "scripts": {
-    "build:client": "webpack --config webpack.client.config.js",
-    "build:server": "webpack --config webpack.server.config.js",
-    "start": "webpack-dev-server --open",
+    "build:client": "webpack --watch --config client/webpack.client.config.js",
+    "build:server": "webpack --watch --config server/webpack.server.config.js",
+    "start": "nodemon --watch server/dist/ server/dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gleb Kost",
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "express": "^4.15.4",
     "glamor": "^2.20.39",
     "glamorous": "^4.1.0",
     "prop-types": "^15.5.10",

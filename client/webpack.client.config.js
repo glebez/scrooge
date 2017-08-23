@@ -1,13 +1,16 @@
 const path = require('path');
 
 module.exports = {
-  target: 'node',
-  entry: './src/server.js',
+  entry: './client/src/index.js',
   output: {
-    filename: 'server.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/static/'
   },
   devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './dist'
+  },
   module: {
     rules: [
       {
@@ -22,10 +25,7 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          outputPath: './static/'
-        }
+        loader: 'file-loader'
       }
     ]
   },

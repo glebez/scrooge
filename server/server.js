@@ -8,13 +8,13 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { renderStatic } from 'glamor/server';
 import { rehydrate } from 'glamor';
-import scroogeApp from './reducers';
-import Scrooge from './Scrooge';
+import scroogeApp from '../client/src/reducers';
+import Scrooge from '../client/src/Scrooge';
 
 const app = Express();
 const port = 4200;
 
-app.use('/static', Express.static('dist/static'));
+app.use('/static', Express.static('./client/dist'));
 // This is fired every time the server side receives a request
 app.get('*', handleRender);
 
