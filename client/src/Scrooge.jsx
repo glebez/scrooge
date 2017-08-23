@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { fetchCurrencies, fetchPortfolio } from './actions';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
+import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 
 const Container = glamorous.div({
   maxWidth: '700px',

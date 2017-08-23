@@ -1,4 +1,5 @@
 import Express from 'express';
+import favicon from 'serve-favicon';
 import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { middleware as reduxPackMiddleware } from 'redux-pack';
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { renderStatic } from 'glamor/server';
-import { rehydrate } from 'glamor';
 import scroogeApp from '../client/src/reducers';
 import Scrooge from '../client/src/Scrooge';
 
@@ -15,34 +15,30 @@ const app = Express();
 const port = 4200;
 
 app.use('/static', Express.static('./client/dist'));
-// This is fired every time the server side receives a request
+app.use(favicon('./client/dist/favicon.ico'));
+
 app.get('*', handleRender);
 
-// We are going to fill these out in the sections to follow
+
 function handleRender(req, res) {
-  // Create a new Redux store instance
   const store = createStore(scroogeApp, composeWithDevTools(applyMiddleware(reduxPackMiddleware)));
   const context = {};
 
-  // Render the component to a string
-  const { html, css, ids } = renderStatic(() => {
-    return renderToString(
+  const { html, css, ids } = renderStatic(() =>
+    renderToString(
       <Provider store={store}>
         <StaticRouter
-        location={req.url}
-        context={context}
+          location={req.url}
+          context={context}
         >
           <Scrooge />
         </StaticRouter>
-      </Provider>
-    );
-  }
-);
+      </Provider>,
+    ),
+  );
 
-  // Grab the initial state from our Redux store
   const preloadedState = store.getState();
 
-  // Send the rendered page back to the client
   res.send(renderFullPage(html, css, ids, preloadedState));
 }
 
