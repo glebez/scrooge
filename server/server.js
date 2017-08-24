@@ -22,14 +22,13 @@ app.get('*', handleRender);
 
 function handleRender(req, res) {
   const store = createStore(scroogeApp, composeWithDevTools(applyMiddleware(reduxPackMiddleware)));
-  const context = {};
 
   const { html, css, ids } = renderStatic(() =>
     renderToString(
       <Provider store={store}>
         <StaticRouter
           location={req.url}
-          context={context}
+          context={{}}
         >
           <Scrooge />
         </StaticRouter>

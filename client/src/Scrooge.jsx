@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import glamorous from 'glamorous';
 import {
   Route,
+  withRouter,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, fetchPortfolio } from './actions';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
-import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 
 const Container = glamorous.div({
   maxWidth: '700px',
@@ -75,4 +76,4 @@ Scrooge.propTypes = {
   dispatch: PropTypes.func,
 };
 
-export default connect(state => state)(Scrooge);
+export default withRouter(connect(state => state)(Scrooge));
