@@ -10,6 +10,7 @@ import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, fetchPortfolio } from './actions';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
+import './styles/globals';
 
 const Container = glamorous.div({
   maxWidth: '700px',

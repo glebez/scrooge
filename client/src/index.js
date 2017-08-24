@@ -8,7 +8,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { rehydrate } from 'glamor';
 import Scrooge from './Scrooge';
 import scroogeApp from './reducers';
-import './styles/globals';
 
 // Grab the state from a global variable injected into the server-generated HTML
 const preloadedState = window.__PRELOADED_STATE__;
