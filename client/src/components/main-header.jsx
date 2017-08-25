@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import { colors } from '../styles/variables';
 import ScroogeLogo from '../styles/logo.svg';
-import Link from './link';
+import Link from './atoms/link';
 
 const HeaderContainer = glamorous.div({
   marginBottom: '25px',

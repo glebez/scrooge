@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import glamorous from 'glamorous';
 import {
   Route,
   withRouter,
@@ -8,14 +7,12 @@ import {
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, fetchPortfolio } from './actions';
+import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
+import Login from './components/login';
+import Signup from './components/signup';
 import './styles/globals';
-
-const Container = glamorous.div({
-  maxWidth: '700px',
-  margin: '0 auto',
-});
 
 class Scrooge extends React.Component {
   constructor(props) {
@@ -39,14 +36,6 @@ class Scrooge extends React.Component {
     );
   }
 
-  renderLogin() {
-    return (<p>Here be login</p>);
-  }
-
-  renderSignup() {
-    return (<p>Here be signup</p>);
-  }
-
   renderMarket() {
     return (<p>Here be market data</p>);
   }
@@ -61,8 +50,8 @@ class Scrooge extends React.Component {
         <MainHeader/>
         <Container>
           <Route path="/" exact render={this.renderPortfolio} />
-          <Route path="/login" exact render={this.renderLogin} />
-          <Route path="/signup" exact render={this.renderSignup} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
           <Route path="/market" exact render={this.renderMarket} />
           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
         </Container>
