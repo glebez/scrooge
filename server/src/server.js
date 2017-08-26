@@ -8,11 +8,13 @@ import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { renderStatic } from 'glamor/server';
-import scroogeApp from '../client/src/reducers';
-import Scrooge from '../client/src/Scrooge';
+import scroogeApp from '../../client/src/reducers';
+import Scrooge from '../../client/src/Scrooge';
+
+require('dotenv').config({ path: 'variables.env' });
 
 const app = Express();
-const port = 4200;
+const port = process.env.PORT || 3000;
 
 app.use('/static', Express.static('./client/dist'));
 app.use(favicon('./client/dist/favicon.ico'));
