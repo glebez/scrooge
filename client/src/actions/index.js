@@ -31,3 +31,10 @@ export function fetchPortfolio() {
     promise: Promise.resolve(mockPortfolio),
   };
 }
+
+export function signup(email, password, confirmPassword) {
+  return {
+    type: Actions.SIGNUP,
+    promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
+  };
+}

@@ -9,8 +9,8 @@ function Login({ handleSubmit }) {
     <Container css={{ paddingTop: '20px' }}>
       <H1 textAlign="center" fontWeight="400" marginBottom="35px">Login</H1>
       <form onSubmit={handleSubmit}>
-        <Input type="email" name="email" placeholder="email"/>
-        <Input type="password" name="password" placeholder="password"/>
+        <Input type="email" name="email" placeholder="email" required/>
+        <Input type="password" name="password" placeholder="password" required/>
         <Input type="submit" value="Login"/>
       </form>
     </Container>

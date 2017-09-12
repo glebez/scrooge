@@ -18,6 +18,7 @@ class Scrooge extends React.Component {
   constructor(props) {
     super(props);
     this.renderPortfolio = this.renderPortfolio.bind(this);
+    this.renderSignup = this.renderSignup.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +45,10 @@ class Scrooge extends React.Component {
     return (<p>Here be portfolio setup</p>);
   }
 
+  renderSignup() {
+    return (<Signup dispatch={this.props.dispatch} />);
+  }
+
   render() {
     return (
       <div>
@@ -51,7 +56,7 @@ class Scrooge extends React.Component {
         <Container>
           <Route path="/" exact render={this.renderPortfolio} />
           <Route path="/login" exact component={Login} />
-          <Route path="/signup" exact component={Signup} />
+          <Route path="/signup" exact render={this.renderSignup} />
           <Route path="/market" exact render={this.renderMarket} />
           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
         </Container>
