@@ -3,7 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   target: 'node',
-  entry: './server/src/server.js',
+  entry: ['babel-polyfill', './server/src/server.js'],
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist')

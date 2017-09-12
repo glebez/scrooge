@@ -1,3 +1,4 @@
 {
-  "presets": ["env", "react", "airbnb"]
+  "presets": ["env", "react", "airbnb"],
+  "plugins": ["syntax-async-functions", "transform-async-to-generator"]
 }
