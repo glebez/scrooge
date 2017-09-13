@@ -3,8 +3,7 @@ import favicon from 'serve-favicon';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-import handleRender from './controllers/serverRenderController';
-import { registerUser } from './controllers/userController';
+import routes from './routes';
 
 require('dotenv').config({ path: 'variables.env' });
 
@@ -24,9 +23,7 @@ app.use(favicon('./client/dist/favicon.ico'));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
-app.post('/auth/register', registerUser);
-
-app.get('*', handleRender);
+app.use('/', routes);
 
 app.use((err, req, res) => {
   res.status(500).send(err);
