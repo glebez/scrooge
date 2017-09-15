@@ -1,23 +1,29 @@
 import { handle } from 'redux-pack';
 import Actions from '../actions/const';
 
-export default function user(state = {}, action) {
+const initialState = {
+  name: null,
+  token: null,
+};
+
+export default function user(state = initialState, action) {
   switch (action.type) {
     case Actions.SIGNUP:
+    case Actions.LOGIN:
       return handle(state, action, {
-        start: (prevState) => {
-          console.log('Signing up');
-          return prevState;
-        },
-        finish: (prevState) => {
-          console.log('Finished!', action.payload);
-          return prevState;
-        },
-        failure: prevState => prevState,
-        success: prevState => prevState,
+        success: prevState => getUserData(action.payload.data) || prevState,
       });
+
+    case Actions.LOGOUT:
+      return initialState;
 
     default:
       return state;
   }
+}
+
+function getUserData(data) {
+  const { user, token } = data || {};
+  if (!user || !token) return null;
+  return { name: user, token };
 }

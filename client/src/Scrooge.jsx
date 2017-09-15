@@ -19,6 +19,7 @@ class Scrooge extends React.Component {
     super(props);
     this.renderPortfolio = this.renderPortfolio.bind(this);
     this.renderSignup = this.renderSignup.bind(this);
+    this.renderLogin = this.renderLogin.bind(this);
   }
 
   componentDidMount() {
@@ -49,13 +50,17 @@ class Scrooge extends React.Component {
     return (<Signup dispatch={this.props.dispatch} />);
   }
 
+  renderLogin() {
+    return (<Login dispatch={this.props.dispatch} />);
+  }
+
   render() {
     return (
       <div>
         <MainHeader/>
         <Container>
           <Route path="/" exact render={this.renderPortfolio} />
-          <Route path="/login" exact component={Login} />
+          <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />
           <Route path="/market" exact render={this.renderMarket} />
           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />

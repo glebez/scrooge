@@ -38,3 +38,16 @@ export function signup(email, password, confirmPassword) {
     promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
   };
 }
+
+export function login(email, password) {
+  return {
+    type: Actions.LOGIN,
+    promise: axios.post('http://localhost:4200/auth/login', { email, password }),
+  };
+}
+
+export function logout() {
+  return {
+    type: Actions.LOGOUT,
+  };
+}
