@@ -1,16 +1,17 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as OriginalRouterLink } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { colors } from '../../styles/variables';
 
-const WrappedLink = props => <RouterLink {...props} />;
+const WrappedLink = props => <OriginalRouterLink {...props} />;
 export const glamorousLinkFactory = glamorous(WrappedLink);
-const Link = glamorousLinkFactory({
+const linkStyles = {
   textDecoration: 'none',
   color: colors.bloodyRed,
   ':hover': {
     color: colors.ketchupRed,
   },
-});
+};
 
-export default Link;
+export const RouterLink = glamorousLinkFactory(linkStyles);
+export const Link = glamorous.a(linkStyles);

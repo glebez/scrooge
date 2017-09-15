@@ -55,9 +55,10 @@ class Scrooge extends React.Component {
   }
 
   render() {
+    const { user, dispatch } = this.props;
     return (
       <div>
-        <MainHeader/>
+        <MainHeader username={user.name} dispatch={dispatch} />
         <Container>
           <Route path="/" exact render={this.renderPortfolio} />
           <Route path="/login" exact render={this.renderLogin} />
@@ -73,6 +74,7 @@ class Scrooge extends React.Component {
 Scrooge.propTypes = {
   portfolio: PropTypes.object,
   currencies: PropTypes.object,
+  user: PropTypes.object,
   dispatch: PropTypes.func,
 };
 

@@ -2,7 +2,8 @@ import React from 'react';
 import glamorous from 'glamorous';
 import { colors } from '../styles/variables';
 import ScroogeLogo from '../styles/logo.svg';
-import Link from './atoms/link';
+import { Link, RouterLink } from './atoms/link';
+import { logout } from '../actions';
 
 const HeaderContainer = glamorous.div({
   marginBottom: '25px',
@@ -35,27 +36,61 @@ const NavItem = glamorous.li({
   marginRight: '10px',
 });
 
-export default function MainHeader() {
-  return (
-    <HeaderContainer>
-      <SideBlock />
-      <CenterBlock>
-        <Link to="/">
-          <Logo src={ScroogeLogo} />
-        </Link>
-      </CenterBlock>
-      <SideBlock>
+class MainHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderNav = this.renderNav.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.dispatch(logout());
+  }
+
+  renderNav() {
+    const { username } = this.props;
+    if (username) {
+      return (
+        <NavList>
+          <NavItem>
+            <RouterLink to="/account">{username}</RouterLink>
+          </NavItem>
+          <NavItem>
+            <Link onClick={this.handleLogout} href="#">Log&nbsp;out</Link>
+          </NavItem>
+        </NavList>
+      );
+    }
+      return (
+        <NavList>
+          <NavItem>
+            <RouterLink to="/login">Log&nbsp;in</RouterLink>
+          </NavItem>
+          <NavItem>
+            <RouterLink to="/signup">Sign&nbsp;up</RouterLink>
+          </NavItem>
+        </NavList>
+      );
+  }
+
+  render() {
+    return (
+      <HeaderContainer>
+        <SideBlock />
+        <CenterBlock>
+          <RouterLink to="/">
+            <Logo src={ScroogeLogo} />
+          </RouterLink>
+        </CenterBlock>
+        <SideBlock>
         <nav>
-          <NavList>
-            <NavItem>
-              <Link to="/login">Login</Link>
-            </NavItem>
-            <NavItem>
-              <Link to="/signup">Signup</Link>
-            </NavItem>
-          </NavList>
+          {this.renderNav()}
         </nav>
-      </SideBlock>
-    </HeaderContainer>
-  );
+        </SideBlock>
+      </HeaderContainer>
+    );
+  }
 }
+
+export default MainHeader;
