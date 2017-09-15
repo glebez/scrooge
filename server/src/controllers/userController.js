@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import promisify from 'es6-promisify';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
 
 require('../models/User.js');
 
@@ -13,7 +15,6 @@ export async function registerUser(req, res, next) {
   } catch (err) {
     res.status(500).send(err);
   }
-  res.send('success!');
   next();
 }
 
@@ -31,4 +32,22 @@ export function validateRegister(req, res, next) {
   }
 
   next();
+}
+
+export function loginUser(req, res, next) {
+  passport.authenticate('local', (err, user, passwordErr) => {
+    if (err || !user || passwordErr) {
+      return res.status(401).send(err || passwordErr || 'No user found!');
+    }
+    const payload = {
+      sub: user._id,
+    };
+    const token = jwt.sign(payload, process.env.SECRET);
+    return res.json({
+      success: true,
+      message: 'You have successfully logged in!',
+      token,
+      user: user.email,
+    });
+  })(req, res, next);
 }

@@ -16,6 +16,9 @@ mongoose.connection.on('error', err =>
 
 require('./models/User.js');
 
+const User = mongoose.model('User');
+passport.use(User.createStrategy());
+
 const app = Express();
 const port = process.env.PORT || 3000;
 
