@@ -1,5 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
+import PropTypes from 'prop-types';
 import { colors } from '../styles/variables';
 import ScroogeLogo from '../styles/logo.svg';
 import { Link, RouterLink } from './atoms/link';
@@ -62,16 +63,16 @@ class MainHeader extends React.Component {
         </NavList>
       );
     }
-      return (
-        <NavList>
-          <NavItem>
-            <RouterLink to="/login">Log&nbsp;in</RouterLink>
-          </NavItem>
-          <NavItem>
-            <RouterLink to="/signup">Sign&nbsp;up</RouterLink>
-          </NavItem>
-        </NavList>
-      );
+    return (
+      <NavList>
+        <NavItem>
+          <RouterLink to="/login">Log&nbsp;in</RouterLink>
+        </NavItem>
+        <NavItem>
+          <RouterLink to="/signup">Sign&nbsp;up</RouterLink>
+        </NavItem>
+      </NavList>
+    );
   }
 
   render() {
@@ -84,13 +85,18 @@ class MainHeader extends React.Component {
           </RouterLink>
         </CenterBlock>
         <SideBlock>
-        <nav>
-          {this.renderNav()}
-        </nav>
+          <nav>
+            {this.renderNav()}
+          </nav>
         </SideBlock>
       </HeaderContainer>
     );
   }
 }
+
+MainHeader.propTypes = {
+  dispatch: PropTypes.func,
+  username: PropTypes.string,
+};
 
 export default MainHeader;

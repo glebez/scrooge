@@ -23,7 +23,7 @@ export default function user(state = initialState, action) {
 }
 
 function getUserData(data) {
-  const { user, token } = data || {};
-  if (!user || !token) return null;
-  return { name: user, token };
+  const { user: name, token } = data || {};
+  if (!name || !token) return null;
+  return { name, token };
 }

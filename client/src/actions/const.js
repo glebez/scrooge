@@ -3,7 +3,7 @@ const Actions = {
   FETCH_PORTFOLIO: 'FETCH_PORTFOLIO',
   SIGNUP: 'SIGNUP',
   LOGIN: 'LOGIN',
-  LOGOUT: 'LOGOUT'
+  LOGOUT: 'LOGOUT',
 };
 
 export default Actions;
