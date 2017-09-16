@@ -46,12 +46,12 @@ class Scrooge extends React.Component {
     return (<p>Here be portfolio setup</p>);
   }
 
-  renderSignup() {
-    return (<Signup dispatch={this.props.dispatch} />);
+  renderSignup(routeProps) {
+    return (<Signup dispatch={this.props.dispatch} history={routeProps.history} />);
   }
 
-  renderLogin() {
-    return (<Login dispatch={this.props.dispatch} />);
+  renderLogin(routeProps) {
+    return (<Login dispatch={this.props.dispatch} history={routeProps.history} />);
   }
 
   render() {

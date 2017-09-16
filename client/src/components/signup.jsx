@@ -14,7 +14,13 @@ class Signup extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    this.props.dispatch(signup(form.email.value, form.password.value, form['confirm-password'].value));
+    const { dispatch, history } = this.props;
+    dispatch(signup(
+      form.email.value,
+      form.password.value,
+      form['confirm-password'].value,
+      history
+    ));
   }
 
   render() {
@@ -34,6 +40,7 @@ class Signup extends React.Component {
 
 Signup.propTypes = {
   dispatch: PropTypes.func,
+  history: PropTypes.object,
 };
 
 export default Signup;

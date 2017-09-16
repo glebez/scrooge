@@ -11,7 +11,11 @@ export default function user(state = initialState, action) {
     case Actions.SIGNUP:
     case Actions.LOGIN:
       return handle(state, action, {
-        success: prevState => getUserData(action.payload.data) || prevState,
+        success: (prevState) => {
+          const { history, data } = action.payload;
+          history.push('/');
+          return getUserData(data) || prevState
+        },
       });
 
     case Actions.LOGOUT:

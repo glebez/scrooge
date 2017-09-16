@@ -14,7 +14,8 @@ class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    this.props.dispatch(login(form.email.value, form.password.value));
+    const { dispatch, history } = this.props;
+    dispatch(login(form.email.value, form.password.value, history));
   }
 
   render() {
@@ -33,6 +34,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func,
+  history: PropTypes.object,
 };
 
 export default Login;

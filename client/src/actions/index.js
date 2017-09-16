@@ -32,17 +32,23 @@ export function fetchPortfolio() {
   };
 }
 
-export function signup(email, password, confirmPassword) {
+export function signup(email, password, confirmPassword, history) {
   return {
     type: Actions.SIGNUP,
-    promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
+    promise: injectHistory(
+      axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
+      history
+    ),
   };
 }
 
-export function login(email, password) {
+export function login(email, password, history) {
   return {
     type: Actions.LOGIN,
-    promise: axios.post('http://localhost:4200/auth/login', { email, password }),
+    promise: injectHistory(
+      axios.post('http://localhost:4200/auth/login', { email, password }),
+      history
+    ),
   };
 }
 
@@ -50,4 +56,11 @@ export function logout() {
   return {
     type: Actions.LOGOUT,
   };
+}
+
+function injectHistory(promise, history) {
+  if (!history) return promise;
+  return promise.then((data) => {
+    return Object.assign({}, data, { history });
+  });
 }
