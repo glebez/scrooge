@@ -35,20 +35,20 @@ export function fetchPortfolio() {
 export function signup(email, password, confirmPassword, history) {
   return {
     type: Actions.SIGNUP,
-    promise: injectHistory(
-      axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
-      history
-    ),
+    promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
+    meta: {
+      onSuccess: () => redirectAfterAuth(history),
+    },
   };
 }
 
 export function login(email, password, history) {
   return {
     type: Actions.LOGIN,
-    promise: injectHistory(
-      axios.post('http://localhost:4200/auth/login', { email, password }),
-      history
-    ),
+    promise: axios.post('http://localhost:4200/auth/login', { email, password }),
+    meta: {
+      onSuccess: () => redirectAfterAuth(history),
+    },
   };
 }
 
@@ -58,9 +58,6 @@ export function logout() {
   };
 }
 
-function injectHistory(promise, history) {
-  if (!history) return promise;
-  return promise.then((data) => {
-    return Object.assign({}, data, { history });
-  });
+function redirectAfterAuth(history) {
+  return history.push('/');
 }

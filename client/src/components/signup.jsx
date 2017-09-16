@@ -19,7 +19,7 @@ class Signup extends React.Component {
       form.email.value,
       form.password.value,
       form['confirm-password'].value,
-      history
+      history,
     ));
   }
 
