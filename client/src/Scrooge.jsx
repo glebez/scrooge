@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import {
   Route,
   withRouter,
+  Redirect,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, fetchPortfolio } from './actions';
+import { fetchCurrencies, fetchPortfolio, logout } from './actions';
 import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
@@ -20,6 +21,7 @@ class Scrooge extends React.Component {
     this.renderPortfolio = this.renderPortfolio.bind(this);
     this.renderSignup = this.renderSignup.bind(this);
     this.renderLogin = this.renderLogin.bind(this);
+    this.renderLogout = this.renderLogout.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +55,10 @@ class Scrooge extends React.Component {
   renderLogin(routeProps) {
     return (<Login dispatch={this.props.dispatch} history={routeProps.history} />);
   }
+  renderLogout() {
+    this.props.dispatch(logout());
+    return (<Redirect to='/' />);
+  }
 
   render() {
     const { user, dispatch } = this.props;
@@ -63,6 +69,7 @@ class Scrooge extends React.Component {
           <Route path="/" exact render={this.renderPortfolio} />
           <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />
+          <Route path="/logout" exact render={this.renderLogout} />
           <Route path="/market" exact render={this.renderMarket} />
           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
         </Container>

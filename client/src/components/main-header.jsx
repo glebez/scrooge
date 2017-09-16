@@ -3,8 +3,7 @@ import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import { colors } from '../styles/variables';
 import ScroogeLogo from '../styles/logo.svg';
-import { Link, RouterLink } from './atoms/link';
-import { logout } from '../actions';
+import { RouterLink } from './atoms/link';
 
 const HeaderContainer = glamorous.div({
   marginBottom: '25px',
@@ -41,12 +40,6 @@ class MainHeader extends React.Component {
   constructor(props) {
     super(props);
     this.renderNav = this.renderNav.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
-  handleLogout(e) {
-    e.preventDefault();
-    this.props.dispatch(logout());
   }
 
   renderNav() {
@@ -58,7 +51,7 @@ class MainHeader extends React.Component {
             <RouterLink to="/account">{username}</RouterLink>
           </NavItem>
           <NavItem>
-            <Link onClick={this.handleLogout} href="#">Log&nbsp;out</Link>
+            <RouterLink to="/logout">Log&nbsp;out</RouterLink>
           </NavItem>
         </NavList>
       );
