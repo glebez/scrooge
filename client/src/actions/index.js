@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Actions from './const';
+import { handleAuthSuccess } from '../utils/auth';
 
 export function fetchCurrencies() {
   return {
@@ -37,7 +38,7 @@ export function signup(email, password, confirmPassword, history) {
     type: Actions.SIGNUP,
     promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
     meta: {
-      onSuccess: () => redirectAfterAuth(history),
+      onSuccess: result => handleAuthSuccess(result, history),
     },
   };
 }
@@ -47,7 +48,17 @@ export function login(email, password, history) {
     type: Actions.LOGIN,
     promise: axios.post('http://localhost:4200/auth/login', { email, password }),
     meta: {
-      onSuccess: () => redirectAfterAuth(history),
+      onSuccess: result => handleAuthSuccess(result, history),
+    },
+  };
+}
+
+export function setUser(name, token) {
+  return {
+    type: Actions.SET_USER,
+    payload: {
+      name,
+      token,
     },
   };
 }
@@ -56,8 +67,4 @@ export function logout() {
   return {
     type: Actions.LOGOUT,
   };
-}
-
-function redirectAfterAuth(history) {
-  return history.push('/');
 }

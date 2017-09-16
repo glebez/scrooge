@@ -1,5 +1,6 @@
 import { handle } from 'redux-pack';
 import Actions from '../actions/const';
+import { getUserData } from '../utils/auth';
 
 const initialState = {
   name: null,
@@ -16,17 +17,13 @@ export default function user(state = initialState, action) {
           return getUserData(data) || prevState;
         },
       });
-
+    case Actions.SET_USER: {
+      const { name, token } = action.payload;
+      return { name, token };
+    }
     case Actions.LOGOUT:
       return initialState;
-
     default:
       return state;
   }
-}
-
-function getUserData(data) {
-  const { user: name, token } = data || {};
-  if (!name || !token) return null;
-  return { name, token };
 }

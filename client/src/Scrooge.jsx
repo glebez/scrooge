@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, fetchPortfolio, logout } from './actions';
+import { fetchCurrencies, fetchPortfolio, logout, setUser } from './actions';
+import { retrieveUserData, removeUserData } from './utils/auth';
 import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
@@ -26,6 +27,11 @@ class Scrooge extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const creds = retrieveUserData();
+    if (creds) {
+      const { name, token } = creds;
+      dispatch(setUser(name, token));
+    }
     dispatch(fetchCurrencies());
     dispatch(fetchPortfolio());
   }
@@ -57,6 +63,7 @@ class Scrooge extends React.Component {
   }
   renderLogout() {
     this.props.dispatch(logout());
+    removeUserData();
     return (<Redirect to='/' />);
   }
 
