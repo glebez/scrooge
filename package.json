@@ -2,7 +2,7 @@
   "name": "scrooge",
   "version": "0.1.0",
   "description": "An app to track your cryptocoins value",
-  "main": "index.js",
+  "main": "server/src/server.js",
   "scripts": {
     "watch-sources": "node node_modules/.bin/parallel-webpack --watch",
     "watch-sources:client": "webpack --watch --progress --config client/webpack.client.config.js",
@@ -68,5 +68,9 @@
     "redux-pack": "^0.1.5",
     "serve-favicon": "^2.4.3",
     "validator": "^8.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glebez/scrooge"
   }
 }
