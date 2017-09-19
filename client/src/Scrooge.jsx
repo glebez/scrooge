@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, fetchPortfolio, logout, setUser } from './actions';
-import { retrieveUserData, removeUserData } from './utils/auth';
+import { createStorageUtils } from './utils/auth';
 import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
@@ -19,6 +19,8 @@ import './styles/globals';
 class Scrooge extends React.Component {
   constructor(props) {
     super(props);
+    this.storageUtils = createStorageUtils();
+
     this.renderPortfolio = this.renderPortfolio.bind(this);
     this.renderSignup = this.renderSignup.bind(this);
     this.renderLogin = this.renderLogin.bind(this);
@@ -27,7 +29,7 @@ class Scrooge extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const creds = retrieveUserData();
+    const creds = this.storageUtils.retrieveUserData();
     if (creds) {
       const { name, token } = creds;
       dispatch(setUser(name, token));
@@ -63,7 +65,7 @@ class Scrooge extends React.Component {
   }
   renderLogout() {
     this.props.dispatch(logout());
-    removeUserData();
+    this.storageUtils.removeUserData();
     return (<Redirect to='/' />);
   }
 

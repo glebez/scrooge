@@ -4,21 +4,34 @@ function redirectAfterAuth(history) {
   return history.push('/');
 }
 
-function storeUserData(name, token) {
-  const credentials = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (!credentials && name && token) {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ name, token }));
+export function createStorageUtils(storage) {
+  function storeUserData(name, token) {
+    const credsStorage = storage || localStorage;
+    const credentials = credsStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!credentials && name && token) {
+      credsStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ name, token }));
+    }
   }
+
+  function retrieveUserData() {
+    const credsStorage = storage || localStorage;
+    const creds = credsStorage.getItem(LOCAL_STORAGE_KEY);
+    return creds && JSON.parse(creds);
+  }
+
+  function removeUserData() {
+    const credsStorage = storage || localStorage;
+    return credsStorage.removeItem(LOCAL_STORAGE_KEY);
+  }
+
+  return {
+    storeUserData,
+    retrieveUserData,
+    removeUserData,
+  };
 }
 
-export function retrieveUserData() {
-  const creds = localStorage.getItem(LOCAL_STORAGE_KEY);
-  return creds && JSON.parse(creds);
-}
-
-export function removeUserData() {
-  return localStorage.removeItem(LOCAL_STORAGE_KEY);
-}
+const storageUtils = createStorageUtils();
 
 export function getUserData(serverResponse) {
   const { user: name, token } = serverResponse || {};
@@ -29,5 +42,5 @@ export function getUserData(serverResponse) {
 export function handleAuthSuccess(result, history) {
   redirectAfterAuth(history);
   const { name, token } = getUserData(result.data);
-  storeUserData(name, token);
+  storageUtils.storeUserData(name, token);
 }
