@@ -4,6 +4,7 @@ function redirectAfterAuth(history) {
   return history.push('/');
 }
 
+// This wrapper makes the storage operations sooo much easier to test
 export function createStorageUtils(storage) {
   function storeUserData(name, token) {
     const credsStorage = storage || localStorage;
