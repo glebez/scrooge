@@ -1,13 +1,14 @@
 import { handle } from 'redux-pack';
 import Actions from '../actions/const';
 
-const intialState = {
+const initialState = {
   items: null,
   isFetching: false,
   error: null,
+  baseCurrency: null,
 };
 
-export default function portfolio(state = intialState, action) {
+export default function portfolio(state = initialState, action) {
   switch (action.type) {
     case Actions.FETCH_PORTFOLIO:
       return handle(state, action, {
@@ -15,7 +16,9 @@ export default function portfolio(state = intialState, action) {
         finish: prevState => Object.assign({}, prevState, { isFetching: false }),
         failure: prevState => Object.assign({}, prevState, { error: getError(action) }),
         success: (prevState) => {
-          const { currencies, totalPurchaseCost, baseCurrency } = getData(action) || {};
+          const data = getData(action);
+          if (!data) return prevState;
+          const { currencies, totalPurchaseCost, baseCurrency } = data;
           return Object.assign({}, prevState, {
             items: currencies,
             totalPurchaseCost,
@@ -35,5 +38,5 @@ function getError(action) {
 }
 
 function getData(action) {
-  return action.payload && action.payload.data && action.payload.data;
+  return action.payload && action.payload.data;
 }
