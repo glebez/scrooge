@@ -36,5 +36,5 @@ function prepareCurrencies(action) {
 }
 
 function getData(action) {
-  return action.payload && action.payload.data && action.payload.data;
+  return action.payload && action.payload.data;
 }
