@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import expressValidator from 'express-validator';
 import routes from './routes';
+import createJWTStrategy from './handlers/passport';
 
 require('dotenv').config({ path: 'variables.env' });
 
@@ -18,6 +19,7 @@ require('./models/User.js');
 
 const User = mongoose.model('User');
 passport.use(User.createStrategy());
+passport.use(createJWTStrategy());
 
 const app = Express();
 const port = process.env.PORT || 3000;
