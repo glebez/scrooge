@@ -14,6 +14,29 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Hey, this is not a valid email'],
     reqired: 'Uhm, we can not register you without an email',
   },
+  portfolio: {
+    type: [{
+      items: {
+        type: [{
+          code: {
+            type: String,
+            required: true,
+          },
+          number: {
+            type: Number,
+            reqired: true,
+          },
+          purchaseCost: Number,
+          purchaseCurrency: String,
+        }],
+        reqired: 'Uhm, we can not store an empty portfolio',
+        unique: true,
+      },
+      totalPurchaseCost: Number,
+      totalPurchaseCurrency: String,
+    }],
+    required: true,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
