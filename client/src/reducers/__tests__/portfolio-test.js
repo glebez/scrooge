@@ -1,19 +1,25 @@
 import { assert } from 'chai';
 import { LIFECYCLE } from 'redux-pack';
-import reducer from '../portfolio.js';
+import { portfolio as reducer, initialState } from '../portfolio.js';
 import Actions from '../../actions/const';
+import { logout } from '../../actions';
 import { makePackAction, unknownAction } from '../../utils/tests';
 
 describe('portfolio reducer', () => {
-  const initialState = {
-    items: null,
-    isFetching: false,
-    error: null,
-    baseCurrency: null,
-  };
 
   it('returns unmodified state on unknown action', () => {
     const result = reducer(initialState, unknownAction);
+    assert.deepEqual(result, initialState);
+  });
+
+  it('resets the state to default on LOGOUT action', () => {
+    const state = {
+      items: {
+        foo: 'bar'
+      },
+      totalPurchaseCost: 10000,
+    };
+    const result = reducer(state, logout());
     assert.deepEqual(result, initialState);
   });
 

@@ -1,14 +1,15 @@
 import { handle } from 'redux-pack';
 import Actions from '../actions/const';
 
-const initialState = {
+export const initialState = {
   items: null,
   isFetching: false,
   error: null,
-  baseCurrency: null,
+  totalPurchaseCost: null,
+  totalPurchaseCurrency: null,
 };
 
-export default function portfolio(state = initialState, action) {
+export function portfolio(state = initialState, action) {
   switch (action.type) {
     case Actions.FETCH_PORTFOLIO:
       return handle(state, action, {
@@ -27,10 +28,15 @@ export default function portfolio(state = initialState, action) {
         },
       });
 
+    case Actions.LOGOUT:
+      return initialState;
+
     default:
       return state;
   }
 }
+
+export default portfolio;
 
 function prepareItems(items) {
   return items && items.reduce((prev, curr) => Object.assign({}, prev, { [curr.code]: curr }), {});
