@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, fetchPortfolio, logout, setUser } from './actions';
+import { fetchCurrencies, logout, setUser } from './actions';
 import { createStorageUtils } from './utils/auth';
 import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
@@ -33,18 +33,22 @@ class Scrooge extends React.Component {
     if (creds) {
       const { name, token } = creds;
       dispatch(setUser(name, token));
-      dispatch(fetchPortfolio(token));
     }
     dispatch(fetchCurrencies());
   }
 
   renderPortfolio() {
-    const { currencies: { all, error, isFetching }, portfolio } = this.props;
-    if (isFetching || portfolio.isFetching) return (<p>Fetching data...</p>);
+    const {
+      currencies: { all, error, isFetching },
+      user: { token },
+      portfolio,
+      dispatch,
+    } = this.props;
+    if (isFetching) return (<p>Fetching data...</p>);
     return (
       error
         ? <div className="error">{error}</div>
-        : <Portfolio items={portfolio.items} currencies={all} />
+        : <Portfolio currencies={all} token={token} portfolio={portfolio} dispatch={dispatch} />
     );
   }
 
