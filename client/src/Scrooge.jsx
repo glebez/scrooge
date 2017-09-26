@@ -33,9 +33,9 @@ class Scrooge extends React.Component {
     if (creds) {
       const { name, token } = creds;
       dispatch(setUser(name, token));
+      dispatch(fetchPortfolio(token));
     }
     dispatch(fetchCurrencies());
-    dispatch(fetchPortfolio());
   }
 
   renderPortfolio() {

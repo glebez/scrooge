@@ -59,15 +59,21 @@ describe('portfolio reducer', () => {
     it('updates the state with data from successful async call', () => {
       const payload = {
         data: {
-          currencies: ['foo', 'bar'],
+          items: [{
+            code: 'FOO',
+          }],
           totalPurchaseCost: '10000',
-          baseCurrency: 'RUB',
+          totalPurchaseCurrency: 'RUB',
         },
       };
       const expectedResult = Object.assign({}, initialState, {
-        items: ['foo', 'bar'],
+        items: {
+          FOO: {
+            code: 'FOO',
+          }
+        },
         totalPurchaseCost: '10000',
-        baseCurrency: 'RUB',
+        totalPurchaseCurrency: 'RUB',
       });
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_PORTFOLIO, payload });
       const result = reducer(initialState, action);

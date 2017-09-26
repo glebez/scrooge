@@ -9,27 +9,16 @@ export function fetchCurrencies() {
   };
 }
 
-const mockPortfolio = {
-  data: {
-    baseCurrency: 'eur',
-    totalPurchaseCost: 100000,
-    currencies: {
-      BTC: {
-        number: 0.1234,
-        purchaseCost: 100000,
-      },
-      ETH: {
-        number: 2,
-        purchaseCost: 70000,
-      },
-    },
-  },
-};
-
-export function fetchPortfolio() {
+export function fetchPortfolio(token) {
   return {
     type: Actions.FETCH_PORTFOLIO,
-    promise: Promise.resolve(mockPortfolio),
+    promise: axios({
+      url: 'http://localhost:4200/api/portfolio',
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
   };
 }
 

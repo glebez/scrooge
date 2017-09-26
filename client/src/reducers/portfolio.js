@@ -18,11 +18,11 @@ export default function portfolio(state = initialState, action) {
         success: (prevState) => {
           const data = getData(action);
           if (!data) return prevState;
-          const { currencies, totalPurchaseCost, baseCurrency } = data;
+          const { items, totalPurchaseCost, totalPurchaseCurrency } = data;
           return Object.assign({}, prevState, {
-            items: currencies,
+            items: prepareItems(items),
             totalPurchaseCost,
-            baseCurrency,
+            totalPurchaseCurrency,
           });
         },
       });
@@ -30,6 +30,10 @@ export default function portfolio(state = initialState, action) {
     default:
       return state;
   }
+}
+
+function prepareItems(items) {
+  return items && items.reduce((prev, curr) => Object.assign({}, prev, { [curr.code]: curr }), {});
 }
 
 function getError(action) {
