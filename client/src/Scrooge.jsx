@@ -39,16 +39,17 @@ class Scrooge extends React.Component {
 
   renderPortfolio() {
     const {
-      currencies: { all, error, isFetching },
+      currencies,
       user: { token },
       portfolio,
       dispatch,
     } = this.props;
+    const { error, isFetching } = currencies;
     if (isFetching) return (<p>Fetching data...</p>);
     return (
       error
         ? <div className="error">{error}</div>
-        : <Portfolio currencies={all} token={token} portfolio={portfolio} dispatch={dispatch} />
+        : <Portfolio currencies={currencies} token={token} portfolio={portfolio} dispatch={dispatch} />
     );
   }
 

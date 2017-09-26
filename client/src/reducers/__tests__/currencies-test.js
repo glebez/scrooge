@@ -75,7 +75,8 @@ describe('currencies reducer', () => {
             value: 2,
             bar: 'foo',
           },
-        }
+        },
+        byRank: ['FOO', 'BAR'],
       });
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_CURRENCIES, payload });
       const result = reducer(initialState, action);

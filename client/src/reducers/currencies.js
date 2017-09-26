@@ -3,6 +3,7 @@ import Actions from '../actions/const';
 
 const intialState = {
   all: null,
+  byRank: null,
   isFetching: false,
   error: null,
 };
@@ -14,7 +15,10 @@ export default function currencies(state = intialState, action) {
         start: prevState => Object.assign({}, prevState, { isFetching: true, error: null }),
         finish: prevState => Object.assign({}, prevState, { isFetching: false }),
         failure: prevState => Object.assign({}, prevState, { error: getError(action) }),
-        success: prevState => Object.assign({}, prevState, { all: prepareCurrencies(action) }),
+        success: prevState => Object.assign({}, prevState, {
+          all: prepareCurrencies(action),
+          byRank: prepareCurrenciesByRank(action),
+        }),
       });
 
     default:
@@ -33,6 +37,11 @@ function prepareCurrencies(action) {
     Object.assign({}, result, {
       [current.symbol]: current,
     }), {});
+}
+
+function prepareCurrenciesByRank(action) {
+  const data = getData(action);
+  return data && data.map(currency => currency.symbol);
 }
 
 function getData(action) {

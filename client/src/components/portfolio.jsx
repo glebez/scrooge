@@ -10,18 +10,20 @@ class Portfolio extends React.Component {
       dispatch(fetchPortfolio(token));
     }
   }
+
   render() {
     const { currencies, portfolio } = this.props;
     const portfolioItems = portfolio && portfolio.items;
-    const items = portfolioItems || currencies;
+    const items = (portfolioItems && Object.keys(portfolioItems)) || currencies.byRank;
     if (!items) return null;
     return (
       <div>
         {
-          Object.keys(items).map((symbol) => {
-            const currencyData = currencies[symbol];
-            return <CurrencyCard key={symbol} currency={currencyData} number={items[symbol].number} />;
-          })
+          items.map((symbol) => {
+            const currencyData = currencies.all[symbol];
+            const itemData = items[symbol];
+            return <CurrencyCard key={symbol} currency={currencyData} number={itemData && itemData.number} />;
+          }).slice(0, 50)
         }
       </div>
     );
