@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
       totalPurchaseCost: Number,
       totalPurchaseCurrency: String,
     }],
-    required: true,
   },
 });
 
