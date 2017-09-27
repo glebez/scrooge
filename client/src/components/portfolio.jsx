@@ -14,16 +14,18 @@ class Portfolio extends React.Component {
   render() {
     const { currencies, portfolio } = this.props;
     const portfolioItems = portfolio && portfolio.items;
-    const items = (portfolioItems && Object.keys(portfolioItems)) || currencies.byRank;
-    if (!items) return null;
+    const portfolioCurrencies = portfolioItems && Object.keys(portfolioItems);
+    if (!portfolioCurrencies) {
+      return (<p>Your portfolio seems to be empty...</p>);
+    }
     return (
       <div>
         {
-          items.map((symbol) => {
+          portfolioCurrencies.map((symbol) => {
             const currencyData = currencies.all[symbol];
-            const itemData = items[symbol];
+            const itemData = portfolioItems && portfolioItems[symbol];
             return <CurrencyCard key={symbol} currency={currencyData} number={itemData && itemData.number} />;
-          }).slice(0, 50)
+          })
         }
       </div>
     );

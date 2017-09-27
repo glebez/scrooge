@@ -14,6 +14,7 @@ import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
 import Login from './components/login';
 import Signup from './components/signup';
+import Market from './components/market';
 import './styles/globals';
 
 class Scrooge extends React.Component {
@@ -25,6 +26,7 @@ class Scrooge extends React.Component {
     this.renderSignup = this.renderSignup.bind(this);
     this.renderLogin = this.renderLogin.bind(this);
     this.renderLogout = this.renderLogout.bind(this);
+    this.renderIndex = this.renderIndex.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,11 @@ class Scrooge extends React.Component {
       dispatch(setUser(name, token));
     }
     dispatch(fetchCurrencies());
+  }
+
+  renderIndex() {
+    const { user: { token } } = this.props;
+    return token ? this.renderPortfolio() : this.renderMarket();
   }
 
   renderPortfolio() {
@@ -54,7 +61,16 @@ class Scrooge extends React.Component {
   }
 
   renderMarket() {
-    return (<p>Here be market data</p>);
+    const {
+      currencies,
+    } = this.props;
+    const { error, isFetching } = currencies;
+    if (isFetching) return (<p>Fetching data...</p>);
+    return (
+      error
+        ? <div className="error">{error}</div>
+        : <Market currencies={currencies} />
+    );
   }
 
   renderPortfolioSetup() {
@@ -80,10 +96,11 @@ class Scrooge extends React.Component {
       <div>
         <MainHeader username={user.name} dispatch={dispatch} />
         <Container>
-          <Route path="/" exact render={this.renderPortfolio} />
+          <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />
           <Route path="/logout" exact render={this.renderLogout} />
+          <Route path="/portfolio" exact render={this.renderPortfolio} />
           <Route path="/market" exact render={this.renderMarket} />
           <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
         </Container>
