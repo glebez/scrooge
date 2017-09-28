@@ -8,9 +8,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { rehydrate } from 'glamor';
 import Scrooge from './Scrooge';
 import scroogeApp from './reducers';
+import { createStorageUtils } from './utils/auth';
 
+
+const storageUtils = createStorageUtils();
 // Grab the state from a global variable injected into the server-generated HTML
-const preloadedState = window.__PRELOADED_STATE__;
+const preloadedState = Object.assign({}, window.__PRELOADED_STATE__, { user: storageUtils.retrieveUserData()});
 const rehydrationIds = window.__REHYDRATION_IDS__;
 if (rehydrationIds) rehydrate(window.__REHYDRATION_IDS__);
 // Allow the passed state to be garbage-collected
