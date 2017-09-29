@@ -13,18 +13,19 @@ export function portfolio(state = initialState, action) {
   switch (action.type) {
     case Actions.FETCH_PORTFOLIO:
       return handle(state, action, {
-        start: prevState => Object.assign({}, prevState, { isFetching: true, error: null }),
-        finish: prevState => Object.assign({}, prevState, { isFetching: false }),
-        failure: prevState => Object.assign({}, prevState, { error: getError(action) }),
+        start: prevState => ({ ...prevState, isFetching: true, error: null }),
+        finish: prevState => ({ ...prevState, isFetching: false }),
+        failure: prevState => ({ ...prevState, error: getError(action) }),
         success: (prevState) => {
           const data = getData(action);
           if (!data) return prevState;
           const { items, totalPurchaseCost, totalPurchaseCurrency } = data;
-          return Object.assign({}, prevState, {
+          return {
+            ...prevState,
             items: prepareItems(items),
             totalPurchaseCost,
             totalPurchaseCurrency,
-          });
+          };
         },
       });
 

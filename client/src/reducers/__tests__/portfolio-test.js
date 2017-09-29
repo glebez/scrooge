@@ -25,7 +25,7 @@ describe('portfolio reducer', () => {
 
   describe('with FETCH_PORTFOLIO action', () => {
     it('resets the error state on the start of async call', () => {
-      const state = Object.assign({}, initialState, { error: 'Big bad error' });
+      const state = { ...initialState, error: 'Big bad error' };
       const action = makePackAction(LIFECYCLE.START, { type: Actions.FETCH_PORTFOLIO });
       const result = reducer(state, action);
       assert.isNull(result.error);
@@ -38,7 +38,7 @@ describe('portfolio reducer', () => {
     });
 
     it('sets the fetching flag to false on the finish of async call', () => {
-      const state = Object.assign({}, initialState, { isFetching: true });
+      const state = { ...initialState, isFetching: true };
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_PORTFOLIO });
       const result = reducer(state, action);
       assert.isFalse(result.isFetching);
@@ -72,7 +72,8 @@ describe('portfolio reducer', () => {
           totalPurchaseCurrency: 'RUB',
         },
       };
-      const expectedResult = Object.assign({}, initialState, {
+      const expectedResult = {
+        ...initialState,
         items: {
           FOO: {
             code: 'FOO',
@@ -80,7 +81,7 @@ describe('portfolio reducer', () => {
         },
         totalPurchaseCost: '10000',
         totalPurchaseCurrency: 'RUB',
-      });
+      };
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_PORTFOLIO, payload });
       const result = reducer(initialState, action);
       assert.deepEqual(result, expectedResult);

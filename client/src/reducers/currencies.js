@@ -12,10 +12,11 @@ export default function currencies(state = intialState, action) {
   switch (action.type) {
     case Actions.FETCH_CURRENCIES:
       return handle(state, action, {
-        start: prevState => Object.assign({}, prevState, { isFetching: true, error: null }),
-        finish: prevState => Object.assign({}, prevState, { isFetching: false }),
-        failure: prevState => Object.assign({}, prevState, { error: getError(action) }),
-        success: prevState => Object.assign({}, prevState, {
+        start: prevState => ({ ...prevState, isFetching: true, error: null }),
+        finish: prevState => ({ ...prevState, isFetching: false }),
+        failure: prevState => ({ ...prevState, error: getError(action) }),
+        success: prevState => ({
+          ...prevState,
           all: prepareCurrencies(action),
           byRank: prepareCurrenciesByRank(action),
         }),
@@ -34,7 +35,7 @@ function getError(action) {
 function prepareCurrencies(action) {
   const data = getData(action);
   return data && data.reduce((result, current) =>
-    Object.assign({}, result, {
+    ({ ...result,
       [current.symbol]: current,
     }), {});
 }

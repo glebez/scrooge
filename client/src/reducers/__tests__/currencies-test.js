@@ -18,7 +18,7 @@ describe('currencies reducer', () => {
 
   describe('with FETCH_CURRENCIES action', () => {
     it('resets the error state on the start of async call', () => {
-      const state = Object.assign({}, initialState, { error: 'Big bad error' });
+      const state = { ...initialState, error: 'Big bad error' };
       const action = makePackAction(LIFECYCLE.START, { type: Actions.FETCH_CURRENCIES });
       const result = reducer(state, action);
       assert.isNull(result.error);
@@ -31,7 +31,7 @@ describe('currencies reducer', () => {
     });
 
     it('sets the fetching flag to false on the finish of async call', () => {
-      const state = Object.assign({}, initialState, { isFetching: true });
+      const state = { ...initialState, isFetching: true };
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_CURRENCIES });
       const result = reducer(state, action);
       assert.isFalse(result.isFetching);
@@ -63,7 +63,8 @@ describe('currencies reducer', () => {
           }
         ],
       };
-      const expectedResult = Object.assign({}, initialState, {
+      const expectedResult = {
+        ...initialState,
         all: {
           FOO: {
             symbol: 'FOO',
@@ -77,7 +78,7 @@ describe('currencies reducer', () => {
           },
         },
         byRank: ['FOO', 'BAR'],
-      });
+      };
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_CURRENCIES, payload });
       const result = reducer(initialState, action);
       assert.deepEqual(result, expectedResult);
