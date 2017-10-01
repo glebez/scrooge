@@ -5,31 +5,24 @@ import { colors } from '../styles/variables';
 import ScroogeLogo from '../styles/logo.svg';
 import { RouterLink } from './atoms/link';
 
+const LOGO_WIDTH = '60px';
+
 const HeaderContainer = glamorous.div({
   marginBottom: '25px',
   padding: '10px 20px',
   backgroundColor: colors.paperYellow,
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: `1fr ${LOGO_WIDTH} 1fr`,
 });
 
 const Logo = glamorous.img({
   height: '50px',
 });
 
-const SideBlock = glamorous.div({
-  flexGrow: 1,
-  flexBasis: '20%',
-});
-
-const CenterBlock = glamorous.div({
-  flexGrow: 2,
-  flexBasis: '60%',
-  textAlign: 'center',
-});
-
 const NavList = glamorous.ul({
   listStyle: 'none',
   display: 'flex',
+  justifyContent: 'flex-end',
 });
 
 const NavItem = glamorous.li({
@@ -71,17 +64,15 @@ class MainHeader extends React.Component {
   render() {
     return (
       <HeaderContainer>
-        <SideBlock />
-        <CenterBlock>
-          <RouterLink to="/">
-            <Logo src={ScroogeLogo} />
-          </RouterLink>
-        </CenterBlock>
-        <SideBlock>
+        <div></div>
+        <RouterLink to="/">
+          <Logo src={ScroogeLogo} />
+        </RouterLink>
+        <div>
           <nav>
             {this.renderNav()}
           </nav>
-        </SideBlock>
+        </div>
       </HeaderContainer>
     );
   }
