@@ -9,7 +9,7 @@ export const initialState = {
   totalPurchaseCurrency: null,
 };
 
-export function portfolio(state = initialState, action) {
+export default function portfolio(state = initialState, action) {
   switch (action.type) {
     case Actions.FETCH_PORTFOLIO:
       return handle(state, action, {
@@ -37,8 +37,6 @@ export function portfolio(state = initialState, action) {
   }
 }
 
-export default portfolio;
-
 function prepareItems(items) {
   return items && items.reduce((prev, curr) => Object.assign({}, prev, { [curr.code]: curr }), {});
 }
@@ -50,4 +48,23 @@ function getError(action) {
 
 function getData(action) {
   return action.payload && action.payload.data;
+}
+
+/**
+ * Picks pairs of currency symbol and number hold for portfolio
+ * @param {Object} state - portfolio redux state
+ * @return [{symbol: string, number: number}]
+ */
+
+export function selectPortfolioItemPairs(state) {
+  const { items } = state;
+  if (!items) return [];
+  return Object.keys(items).map(symbol => ({
+    symbol,
+    number: items[symbol].number,
+  }));
+}
+
+export function selectTotalPortfolioCost(state) {
+  return state.totalPurchaseCost;
 }

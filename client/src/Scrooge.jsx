@@ -35,8 +35,8 @@ class Scrooge extends React.Component {
   }
 
   renderIndex() {
-    const { user: { token } } = this.props;
-    return token ? this.renderPortfolio() : this.renderMarket();
+    const { user } = this.props;
+    return user && user.token ? this.renderPortfolio() : this.renderMarket();
   }
 
   renderPortfolio() {
@@ -64,7 +64,7 @@ class Scrooge extends React.Component {
     return (
       error
         ? <div className="error">{error}</div>
-        : <Market currencies={currencies} />
+        : <Market />
     );
   }
 
@@ -89,7 +89,7 @@ class Scrooge extends React.Component {
     const { user, dispatch } = this.props;
     return (
       <div>
-        <MainHeader username={user.name} dispatch={dispatch} />
+        <MainHeader username={user && user.name} dispatch={dispatch} />
         <Container>
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />

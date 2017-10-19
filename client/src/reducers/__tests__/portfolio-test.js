@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { LIFECYCLE } from 'redux-pack';
-import { portfolio as reducer, initialState } from '../portfolio.js';
+import reducer, { initialState } from '../portfolio.js';
 import Actions from '../../actions/const';
 import { logout } from '../../actions';
 import { makePackAction, unknownAction } from '../../utils/tests';

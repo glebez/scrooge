@@ -1,24 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CurrencyCard from './currency-card';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { selectMarketData } from '../reducers/currencies';
+import CurrencyCard from './portfolio-item';
 
-function Market({ currencies }) {
-  const { all, byRank } = currencies;
-  if (!byRank) return null;
+function Market({ marketData }) {
+  if (!marketData) return null;
   return (
     <div>
       {
-        byRank.map((symbol) => {
-          const currencyData = all[symbol];
-          return <CurrencyCard key={symbol} currency={currencyData}/>;
-        }).slice(0, 50)
+        marketData.map(cardProps => (
+          <CurrencyCard key={cardProps.symbol} {...cardProps} />
+        )).slice(0, 50)
       }
     </div>
   );
 }
 
 Market.propTypes = {
-  currencies: PropTypes.object,
+  marketData: PropTypes.array,
 };
 
-export default Market;
+function mapStateToProps(state) {
+  return {
+    marketData: selectMarketData(state.currencies),
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(Market));
