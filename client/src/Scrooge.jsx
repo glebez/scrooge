@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, logout } from './actions';
 import { createStorageUtils } from './utils/auth';
+import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
 import MainHeader from './components/main-header';
 import Portfolio from './components/portfolio';
@@ -36,16 +37,18 @@ class Scrooge extends React.Component {
 
   renderIndex() {
     const { user } = this.props;
-    return user && user.token ? this.renderPortfolio() : this.renderMarket();
+    const token = selectToken(user);
+    return token ? this.renderPortfolio() : this.renderMarket();
   }
 
   renderPortfolio() {
     const {
       currencies,
-      user: { token },
+      user,
       portfolio,
       dispatch,
     } = this.props;
+    const token = selectToken(user);
     const { error, isFetching } = currencies;
     if (isFetching) return (<p>Fetching data...</p>);
     return (
@@ -89,7 +92,7 @@ class Scrooge extends React.Component {
     const { user, dispatch } = this.props;
     return (
       <div>
-        <MainHeader username={user && user.name} dispatch={dispatch} />
+        <MainHeader username={selectName(user)} dispatch={dispatch} />
         <Container>
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />

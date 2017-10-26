@@ -27,3 +27,11 @@ export default function user(state = initialState, action) {
       return state;
   }
 }
+
+export function selectToken(state) {
+  return state && state.token;
+}
+
+export function selectName(state) {
+  return state && state.name;
+}

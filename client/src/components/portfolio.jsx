@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { selectPortfolioCurrenciesData } from '../reducers/currencies';
 import { selectPortfolioItemPairs, selectTotalPortfolioCost } from '../reducers/portfolio';
+import { selectToken } from '../reducers/user';
 import PortfolioItem from './portfolio-item';
 import Card from './card';
 import { fetchPortfolio } from '../actions';
@@ -52,8 +53,9 @@ Portfolio.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { token } = state.user || {};
-  const portfolioItemPairs = selectPortfolioItemPairs(state.portfolio);
+  const { user, portfolio } = state;
+  const token = selectToken(user);
+  const portfolioItemPairs = selectPortfolioItemPairs(portfolio);
   const portfolioItems = selectPortfolioCurrenciesData(
     state.currencies,
     portfolioItemPairs,
