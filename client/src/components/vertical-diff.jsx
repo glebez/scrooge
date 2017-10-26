@@ -14,6 +14,8 @@ const DiffNumber = glamorous.p({
   fontSize: '24px',
 }, ({ negative }) => ({
   color: negative ? colors.rottenRed : colors.cashGreen,
+}), ({ valueLineHeight = 1 }) => ({
+  lineHeight: valueLineHeight,
 }));
 
 function isNegative(input) {
@@ -21,11 +23,11 @@ function isNegative(input) {
 }
 
 
-function VerticalDiff({ label, value }) {
+function VerticalDiff({ label, value, valueLineHeight }) {
   return (
     <VerticalDiffContainer>
       <p>{label}</p>
-      <DiffNumber negative={isNegative(value)}>
+      <DiffNumber negative={isNegative(value)} valueLineHeight={valueLineHeight}>
         {value}
       </DiffNumber>
     </VerticalDiffContainer>
@@ -35,6 +37,7 @@ function VerticalDiff({ label, value }) {
 VerticalDiff.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
+  valueLineHeight: PropTypes.string,
 };
 
 export default VerticalDiff;

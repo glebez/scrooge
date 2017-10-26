@@ -27,14 +27,14 @@ class Portfolio extends React.Component {
   }
 
   render() {
-    const { portfolioItems, summary } = this.props;
+    const { portfolioItems, summaryDataRows } = this.props;
     if (!portfolioItems || !portfolioItems.length) {
       return (<p>Your portfolio seems to be empty...</p>);
     }
     return (
       <div>
         <PortfolioHeading>Your portfolio</PortfolioHeading>
-        <Card {...summary} />
+        <Card dataRows={summaryDataRows} css={{ marginBottom: '35px' }} />
         {
           portfolioItems.map(portfolioItemProps => (
             <PortfolioItem key={portfolioItemProps.symbol} valueSize="big" {...portfolioItemProps} />
@@ -47,7 +47,7 @@ class Portfolio extends React.Component {
 
 Portfolio.propTypes = {
   portfolioItems: PropTypes.array,
-  summary: PropTypes.obj,
+  summaryDataRows: PropTypes.array,
   token: PropTypes.string,
   dispatch: PropTypes.func,
 };
@@ -60,29 +60,69 @@ function mapStateToProps(state) {
     state.currencies,
     portfolioItemPairs,
   );
-  const summary = {
-    mainLabel: 'Total coins value',
-    mainValue: portfolioItems.reduce((sum, item) => (sum + item.mainValue), 0),
-    cost: selectTotalPortfolioCost(state.portfolio),
-    valueCurrency: 'EUR',
-    valueSize: 'big',
-  };
+  const portfolioCost = selectTotalPortfolioCost(portfolio);
+  const summaryDataRows = selectSummaryData(portfolioCost, portfolioItems);
 
-  summary.diffs = [
+  return {
+    portfolioItems,
+    summaryDataRows,
+    token,
+  };
+}
+
+function selectSummaryData(portfolioCost, portfolioItems) {
+  const portfolioValue = portfolioItems.reduce((sum, item) => (sum + item.mainValue), 0);
+  const baseCurrency = 'EUR';
+  return [
     {
-      label: `total diff ${summary.valueCurrency}`,
-      value: (summary.mainValue - summary.cost).toFixed(3),
+      mainLabel: 'Total coins value',
+      mainValue: portfolioValue,
+      valueCurrency: baseCurrency,
+      valueSize: 'big',
+      diffs: selectSummaryRecentDiffs(portfolioValue, portfolioItems),
+    },
+    {
+      mainLabel: 'Purchase cost',
+      mainValue: portfolioCost,
+      valueCurrency: baseCurrency,
+      diffs: selectSummaryTotalDiffs(portfolioCost, portfolioValue, baseCurrency),
+    },
+  ];
+}
+
+function selectSummaryRecentDiffs(value, portfolioItems) {
+  return [
+    {
+      label: '1h',
+      value: calculatePortfolioDiff(portfolioItems, value, 0),
+    },
+    {
+      label: '1d',
+      value: calculatePortfolioDiff(portfolioItems, value, 1),
+    },
+    {
+      label: '7d',
+      value: calculatePortfolioDiff(portfolioItems, value, 2),
+    },
+  ];
+}
+
+function selectSummaryTotalDiffs(cost, value, baseCurrency) {
+  return [
+    {
+      label: `total diff ${baseCurrency}`,
+      value: (value - cost).toFixed(3),
     },
     {
       label: 'total diff %',
-      value: (((summary.mainValue / summary.cost) * 100) - 100).toFixed(3),
+      value: (((value / cost) * 100) - 100).toFixed(3),
     },
   ];
-  return {
-    portfolioItems,
-    summary,
-    token,
-  };
+}
+
+function calculatePortfolioDiff(portfolioItems, portfolioValue, diffIndex) {
+  return (portfolioItems.reduce((sum, item) => (
+    sum + (item.mainValue * item.diffs[diffIndex].value)), 0) / portfolioValue).toFixed(3);
 }
 
 export default withRouter(connect(mapStateToProps)(Portfolio));
