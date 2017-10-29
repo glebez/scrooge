@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "description": "An app to track your cryptocoins value",
   "main": "server/src/server.js",
+  "now": {
+    "dotenv": "variables.env.now",
+    "alias": "scrooge"
+  },
   "scripts": {
-    "watch-sources": "node node_modules/.bin/parallel-webpack --watch",
+    "webpack": "webpack",
+    "watch-sources": "parallel-webpack --watch",
     "watch-sources:client": "webpack --watch --progress --config client/webpack.client.config.js",
     "watch-sources:server": "webpack --watch --progress --config server/webpack.server.config.js",
-    "build": "node node_modules/.bin/parallel-webpack",
-    "start": "npm run build && node server/dist/server.js",
+    "build": "webpack --config client/webpack.client.config.js && webpack --config server/webpack.server.config.js",
+    "start": "node server/dist/server.js",
     "dev": "nodemon --watch server/dist/ server/dist/server.js",
     "test": "mocha --require babel-register ./client/src/**/__tests__/*-test.js ./server/src/**/__tests__/*-test.js"
   },
@@ -29,6 +34,7 @@
     "clean-webpack-plugin": "^0.1.16",
     "eslint": "^4.4.1",
     "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",

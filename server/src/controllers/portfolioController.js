@@ -3,7 +3,7 @@ import promisify from 'es6-promisify';
 require('../models/User.js');
 
 export async function savePortfolio(req, res) {
-  const user = req.user;
+  const { user } = req;
   user.portfolio = req.body.portfolio;
   const save = promisify(user.save, user);
   let saveResult;

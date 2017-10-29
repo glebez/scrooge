@@ -13,7 +13,7 @@ export function fetchPortfolio(token) {
   return {
     type: Actions.FETCH_PORTFOLIO,
     promise: axios({
-      url: 'http://localhost:4200/api/portfolio',
+      url: '/api/portfolio',
       method: 'get',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,7 +25,7 @@ export function fetchPortfolio(token) {
 export function signup(email, password, confirmPassword, history) {
   return {
     type: Actions.SIGNUP,
-    promise: axios.post('http://localhost:4200/auth/register', { email, password, confirmPassword }),
+    promise: axios.post('/auth/register', { email, password, confirmPassword }),
     meta: {
       onSuccess: result => handleAuthSuccess(result, history),
     },
@@ -35,7 +35,7 @@ export function signup(email, password, confirmPassword, history) {
 export function login(email, password, history) {
   return {
     type: Actions.LOGIN,
-    promise: axios.post('http://localhost:4200/auth/login', { email, password }),
+    promise: axios.post('/auth/login', { email, password }),
     meta: {
       onSuccess: result => handleAuthSuccess(result, history),
     },

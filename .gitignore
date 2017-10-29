@@ -22,6 +22,7 @@ node_modules/
 
 # dotenv environment variables file
 *.env
+*.env.now
 
 # bundles
 client/dist
