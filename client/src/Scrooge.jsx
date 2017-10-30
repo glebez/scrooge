@@ -28,6 +28,7 @@ class Scrooge extends React.Component {
     this.renderLogin = this.renderLogin.bind(this);
     this.renderLogout = this.renderLogout.bind(this);
     this.renderIndex = this.renderIndex.bind(this);
+    this.renderMarket = this.renderMarket.bind(this);
   }
 
   componentDidMount() {
