@@ -3,6 +3,7 @@ import { colors } from '../../styles/variables';
 import { buttonStyles } from './button';
 
 const Input = glamorous.input({
+  display: 'block',
   width: '100%',
   border: 'none',
   marginBottom: '20px',

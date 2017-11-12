@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, logout } from './actions';
+import { fetchCurrencies, fetchPortfolio, logout } from './actions';
 import { createStorageUtils } from './utils/auth';
 import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
@@ -16,6 +16,7 @@ import Portfolio from './components/portfolio';
 import Login from './components/login';
 import Signup from './components/signup';
 import Market from './components/market';
+import PortfolioSetup from './components/portfolio-setup';
 import './styles/globals';
 
 class Scrooge extends React.Component {
@@ -32,8 +33,12 @@ class Scrooge extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, user } = this.props;
+    const token = selectToken(user);
     dispatch(fetchCurrencies());
+    if (token) {
+      dispatch(fetchPortfolio(token));
+    }
   }
 
   renderIndex() {
@@ -101,7 +106,7 @@ class Scrooge extends React.Component {
           <Route path="/logout" exact render={this.renderLogout} />
           <Route path="/portfolio" exact render={this.renderPortfolio} />
           <Route path="/market" exact render={this.renderMarket} />
-          <Route path="/portfolio-setup" exact render={this.renderPortfolioSetup} />
+          <Route path="/portfolio-setup" exact component={PortfolioSetup} />
         </Container>
       </div>
     );

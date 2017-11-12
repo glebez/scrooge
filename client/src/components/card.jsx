@@ -6,7 +6,7 @@ import { colors } from '../styles/variables';
 
 const cardBG = colors.paperYellow;
 
-const CardBody = glamorous.div({
+export const CardBody = glamorous.div({
   gridGap: '15px',
   padding: '20px 25px 20px 45px',
   background: cardBG,

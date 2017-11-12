@@ -2,7 +2,10 @@ import { handle } from 'redux-pack';
 import Actions from '../actions/const';
 
 export const initialState = {
-  items: null,
+  items: {
+    all: null,
+    ordered: null,
+  },
   isFetching: false,
   error: null,
   totalPurchaseCost: null,
@@ -22,7 +25,10 @@ export default function portfolio(state = initialState, action) {
           const { items, totalPurchaseCost, totalPurchaseCurrency } = data;
           return {
             ...prevState,
-            items: prepareItems(items),
+            items: {
+              all: prepareAllItems(items),
+              ordered: prepareOrderedItems(items),
+            },
             totalPurchaseCost,
             totalPurchaseCurrency,
           };
@@ -37,8 +43,12 @@ export default function portfolio(state = initialState, action) {
   }
 }
 
-function prepareItems(items) {
+function prepareAllItems(items) {
   return items && items.reduce((prev, curr) => Object.assign({}, prev, { [curr.code]: curr }), {});
+}
+
+function prepareOrderedItems(items) {
+  return items.map(item => item.code);
 }
 
 function getError(action) {
@@ -57,11 +67,11 @@ function getData(action) {
  */
 
 export function selectPortfolioItemPairs(state) {
-  const { items } = state;
-  if (!items) return [];
-  return Object.keys(items).map(symbol => ({
+  const { items: { all, ordered } = {} } = state;
+  if (!all || !ordered) return [];
+  return ordered.map(symbol => ({
     symbol,
-    number: items[symbol].number,
+    number: all[symbol].number,
   }));
 }
 

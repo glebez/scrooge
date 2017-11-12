@@ -67,6 +67,9 @@ describe('portfolio reducer', () => {
         data: {
           items: [{
             code: 'FOO',
+          },
+          {
+            code: 'BAR',
           }],
           totalPurchaseCost: '10000',
           totalPurchaseCurrency: 'RUB',
@@ -75,9 +78,15 @@ describe('portfolio reducer', () => {
       const expectedResult = {
         ...initialState,
         items: {
-          FOO: {
-            code: 'FOO',
-          }
+          all: {
+            FOO: {
+              code: 'FOO',
+            },
+            BAR: {
+              code: 'BAR',
+            },
+          },
+          ordered: ['FOO', 'BAR'],
         },
         totalPurchaseCost: '10000',
         totalPurchaseCurrency: 'RUB',
