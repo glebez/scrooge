@@ -11,12 +11,12 @@ import { fetchCurrencies, fetchPortfolio, logout } from './actions';
 import { createStorageUtils } from './utils/auth';
 import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
-import MainHeader from './components/main-header';
-import Portfolio from './components/portfolio';
-import Login from './components/login';
-import Signup from './components/signup';
-import Market from './components/market';
-import PortfolioSetup from './components/portfolio-setup';
+import MainHeader from './components/molecules/main-header';
+import Portfolio from './components/pages/portfolio';
+import Login from './components/pages/login';
+import Signup from './components/pages/signup';
+import Market from './components/pages/market';
+import PortfolioSetup from './components/pages/portfolio-setup';
 import './styles/globals';
 
 class Scrooge extends React.Component {

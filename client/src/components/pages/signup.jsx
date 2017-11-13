@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { H1 } from 'glamorous';
-import Input from './atoms/input';
-import Container from './atoms/container';
-import { login } from '../actions';
+import Input from '../atoms/input';
+import Container from '../atoms/container';
+import { signup } from '../../actions';
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -15,26 +15,32 @@ class Login extends React.Component {
     e.preventDefault();
     const form = e.target;
     const { dispatch, history } = this.props;
-    dispatch(login(form.email.value, form.password.value, history));
+    dispatch(signup(
+      form.email.value,
+      form.password.value,
+      form['confirm-password'].value,
+      history,
+    ));
   }
 
   render() {
     return (
       <Container css={{ paddingTop: '20px' }}>
-        <H1 textAlign="center" fontWeight="400" marginBottom="35px">Login</H1>
+        <H1 textAlign="center" fontWeight="400" marginBottom="35px">Sign up</H1>
         <form onSubmit={this.handleSubmit}>
           <Input type="email" name="email" placeholder="email" required/>
           <Input type="password" name="password" placeholder="password" required/>
-          <Input type="submit" value="Login"/>
+          <Input type="password" name="confirm-password" placeholder="confirm password" required/>
+          <Input type="submit" value="Sign up"/>
         </form>
       </Container>
     );
   }
 }
 
-Login.propTypes = {
+Signup.propTypes = {
   dispatch: PropTypes.func,
   history: PropTypes.object,
 };
 
-export default Login;
+export default Signup;

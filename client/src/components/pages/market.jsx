@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { selectMarketData } from '../reducers/currencies';
-import CurrencyCard from './portfolio-item';
+import { selectMarketData } from '../../reducers/currencies';
+import CurrencyCard from '../molecules/portfolio-item';
 
 function Market({ marketData }) {
   if (!marketData) return null;

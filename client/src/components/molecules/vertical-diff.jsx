@@ -1,7 +1,7 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
-import { colors } from '../styles/variables';
+import { colors } from '../../styles/variables';
 
 const VerticalDiffContainer = glamorous.div({
   display: 'flex',
@@ -21,7 +21,6 @@ const DiffNumber = glamorous.p({
 function isNegative(input) {
   return input && parseFloat(input) < 0;
 }
-
 
 function VerticalDiff({ label, value, valueLineHeight }) {
   return (

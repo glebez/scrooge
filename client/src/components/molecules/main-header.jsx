@@ -1,9 +1,9 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
-import { colors } from '../styles/variables';
-import ScroogeLogo from '../styles/logo.svg';
-import { RouterLink } from './atoms/link';
+import { colors } from '../../styles/variables';
+import ScroogeLogo from '../../styles/logo.svg';
+import { RouterLink } from '../atoms/link';
 
 const LOGO_WIDTH = '60px';
 

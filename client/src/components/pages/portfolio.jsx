@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import glamorous from 'glamorous';
-import { selectPortfolioCurrenciesData } from '../reducers/currencies';
-import { selectPortfolioItemPairs, selectTotalPortfolioCost } from '../reducers/portfolio';
-import { selectToken } from '../reducers/user';
-import PortfolioItem from './portfolio-item';
-import Card from './card';
-import { fetchPortfolio } from '../actions';
+import { selectPortfolioCurrenciesData } from '../../reducers/currencies';
+import { selectPortfolioItemPairs, selectTotalPortfolioCost } from '../../reducers/portfolio';
+import { selectToken } from '../../reducers/user';
+import PortfolioItem from '../molecules/portfolio-item';
+import Card from '../molecules/card';
+import { fetchPortfolio } from '../../actions';
 
 
 const PortfolioHeading = glamorous.h1({

@@ -1,17 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import glamorous from 'glamorous';
-import { CardBody } from './card';
-import Input from './atoms/input';
-import CurrencyCodeInput from './currency-code-input';
-
-
-const PortfolioSetupRowWrapper = glamorous.div({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridGap: '15px',
-});
+import { CardBody } from '../molecules/card';
+import PortfolioSetupInputRow, { PortfolioSetupRowWrapper } from '../molecules/portfolio-setup-input-row';
 
 class PortfolioSetup extends React.Component {
   constructor(props) {
@@ -104,38 +95,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(PortfolioSetup);
-
-function PortfolioSetupInputRow({ values = {}, currencieCodeNamePairs = [], index, onChange, onAutosuggestSelect }) {
-  return (
-    <PortfolioSetupRowWrapper>
-      <CurrencyCodeInput
-        name={`${index}.code`}
-        value={values.code}
-        onChange={onChange}
-        onSelect={onAutosuggestSelect}
-        currencieCodeNamePairs={currencieCodeNamePairs} />
-      <div>
-        <Input
-          name={`${index}.number`}
-          onChange={onChange}
-          placeholder="100"
-          value={values.number} />
-      </div>
-      <div>
-        <Input
-          name={`${index}.purchaseCost`}
-          onChange={onChange}
-          placeholder="10000"
-          value={values.purchaseCost} />
-      </div>
-    </PortfolioSetupRowWrapper>
-  );
-}
-
-PortfolioSetupInputRow.propTypes = {
-  values: PropTypes.object,
-  currencieCodeNamePairs: PropTypes.array,
-  index: PropTypes.number,
-  onChange: PropTypes.func,
-  onAutosuggestSelect: PropTypes.func,
-};

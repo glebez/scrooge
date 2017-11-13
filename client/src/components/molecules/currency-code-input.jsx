@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Autocomplete from 'react-autocomplete';
 import { Div } from 'glamorous';
-import { colors } from '../styles/variables';
-import Input from './atoms/input';
+import { colors } from '../../styles/variables';
+import Input from '../atoms/input';
 
 class CurrencyCodeInput extends React.Component {
   constructor(props) {

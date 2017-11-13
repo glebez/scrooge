@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import CardContentRow from './card-content-row';
-import { colors } from '../styles/variables';
+import { colors } from '../../styles/variables';
 
 const cardBG = colors.paperYellow;
 
