@@ -78,3 +78,11 @@ export function selectPortfolioItemPairs(state) {
 export function selectTotalPortfolioCost(state) {
   return state.totalPurchaseCost;
 }
+
+export function selectOrderedPortfolioItems(state) {
+  return state && state.items && state.items.ordered && state.items.all
+    && state.items.ordered.map((code) => {
+      const { number, purchaseCost } = state.items.all[code];
+      return { number, purchaseCost, code };
+    });
+}

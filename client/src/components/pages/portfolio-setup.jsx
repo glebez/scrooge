@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardBody } from '../molecules/card';
 import PortfolioSetupInputRow, { PortfolioSetupRowWrapper } from '../molecules/portfolio-setup-input-row';
+import { selectOrderedPortfolioItems } from '../../reducers/portfolio';
+import { selectCurrencieCodeNamePairs } from '../../reducers/currencies';
 
 class PortfolioSetup extends React.Component {
   constructor(props) {
@@ -78,16 +80,9 @@ PortfolioSetup.propTypes = {
 
 function mapStateToProps(state) {
   const { currencies, portfolio } = state;
-  const currencieCodeNamePairs = (
-    currencies && currencies.all
-    && Object.keys(currencies.all).sort().map(code => [code, currencies.all[code].name])
-  ) || [];
+  const currencieCodeNamePairs = selectCurrencieCodeNamePairs(currencies);
 
-  const portfolioItems = portfolio && portfolio.items && portfolio.items.ordered && portfolio.items.all
-    && portfolio.items.ordered.map((code) => {
-      const { number, purchaseCost } = portfolio.items.all[code];
-      return { number, purchaseCost, code };
-    });
+  const portfolioItems = selectOrderedPortfolioItems(portfolio);
   return {
     currencieCodeNamePairs,
     portfolioItems,

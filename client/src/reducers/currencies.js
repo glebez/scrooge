@@ -109,3 +109,10 @@ export function selectMarketData(state) {
     selectPortfolioCurrencyData(state.all[symbol])
   ));
 }
+
+export function selectCurrencieCodeNamePairs(state) {
+  return (
+    state && state.all
+    && Object.keys(state.all).sort().map(code => [code, state.all[code].name])
+  ) || [];
+}
