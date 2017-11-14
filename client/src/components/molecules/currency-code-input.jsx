@@ -26,11 +26,13 @@ class CurrencyCodeInput extends React.Component {
   }
 
   static getItemDisplayValue(item) {
+    if (!item || !item.length) return '';
     return `${item[0]} - ${item[1]}`;
   }
 
   shouldItemRender(item) {
     const { value } = this.props;
+    if (!value) return false;
     return CurrencyCodeInput.getItemDisplayValue(item).toLowerCase().indexOf(value.toLowerCase()) >= 0;
   }
 

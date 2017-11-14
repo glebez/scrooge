@@ -35,6 +35,7 @@ class MainHeader extends React.Component {
     this.renderNav = this.renderNav.bind(this);
   }
 
+  // TODO: rethink navigation
   renderNav() {
     const { username } = this.props;
     if (username) {

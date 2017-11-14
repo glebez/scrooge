@@ -5,6 +5,7 @@ import { CardBody } from '../molecules/card';
 import PortfolioSetupInputRow, { PortfolioSetupRowWrapper } from '../molecules/portfolio-setup-input-row';
 import { selectOrderedPortfolioItems } from '../../reducers/portfolio';
 import { selectCurrencieCodeNamePairs } from '../../reducers/currencies';
+import Button from '../atoms/button';
 
 class PortfolioSetup extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class PortfolioSetup extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAutosuggestSelect = this.handleAutosuggestSelect.bind(this);
+    this.addRow = this.addRow.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,16 +27,20 @@ class PortfolioSetup extends React.Component {
 
   renderInputRows() {
     const { currencieCodeNamePairs } = this.props;
-    const { values } = this.state;
-    return (values && values.map((item, index) => (
-      <PortfolioSetupInputRow
-        key={index}
-        index={index}
-        currencieCodeNamePairs={currencieCodeNamePairs}
-        onChange={this.handleInputChange}
-        onAutosuggestSelect={value => this.handleAutosuggestSelect(index, value)}
-        values={item} />
-    ))) || [];
+    const values = this.state.values || [{}];
+
+    return values.map((item, index) => {
+      const boundHandleAutosuggestSelect = value => this.handleAutosuggestSelect(index, value);
+      return (
+        <PortfolioSetupInputRow
+          key={index}
+          index={index}
+          currencieCodeNamePairs={currencieCodeNamePairs}
+          onChange={this.handleInputChange}
+          onAutosuggestSelect={boundHandleAutosuggestSelect}
+          values={item} />
+      );
+    });
   }
 
   handleInputChange(e) {
@@ -57,7 +63,17 @@ class PortfolioSetup extends React.Component {
     this.setState({ values });
   }
 
+  addRow() {
+    const values = [
+      ...this.state.values,
+      {},
+    ];
+    this.setState({ values });
+  }
+
   render() {
+    // TODO: add saving fucntionality
+    // TODO: add input validation
     return (
       <form onSubmit={e => e.preventDefault()}>
         <CardBody>
@@ -67,6 +83,8 @@ class PortfolioSetup extends React.Component {
             <label>Purchase price (optional)</label>
           </PortfolioSetupRowWrapper>
           { this.renderInputRows() }
+          <Button css={{ marginBottom: '15px' }} onClick={this.addRow}>Add row</Button>
+          <Button onClick={this.addRow}>Save</Button>
         </CardBody>
       </form>
     );

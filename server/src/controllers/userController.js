@@ -34,6 +34,10 @@ export function validateRegister(req, res, next) {
   next();
 }
 
+// TODO: add mail sending upon registration
+
+// TODO: add password reset functionality
+
 export function loginUser(req, res, next) {
   passport.authenticate('local', (err, user, passwordErr) => {
     if (err || !user || passwordErr) {
