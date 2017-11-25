@@ -32,7 +32,7 @@ class CurrencyCodeInput extends React.Component {
 
   shouldItemRender(item) {
     const { value } = this.props;
-    if (!value) return false;
+    if (value == null) return false;
     return CurrencyCodeInput.getItemDisplayValue(item).toLowerCase().indexOf(value.toLowerCase()) >= 0;
   }
 
@@ -49,14 +49,14 @@ class CurrencyCodeInput extends React.Component {
   }
 
   render() {
-    const { value, name, placeholder = 'BTC', onChange, onSelect, currencieCodeNamePairs } = this.props;
+    const { value, name, placeholder = 'BTC', onChange, onSelect, onBlur, currencieCodeNamePairs } = this.props;
     return (
         <Autocomplete
           getItemValue={CurrencyCodeInput.getItemValue}
           items={currencieCodeNamePairs}
           renderItem={CurrencyCodeInput.renderItem}
           renderInput={CurrencyCodeInput.renderInput}
-          inputProps={{ name, placeholder }}
+          inputProps={{ name, placeholder, onBlur }}
           value={value}
           onChange={onChange}
           onSelect={onSelect}
@@ -73,6 +73,7 @@ CurrencyCodeInput.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   onSelect: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default CurrencyCodeInput;

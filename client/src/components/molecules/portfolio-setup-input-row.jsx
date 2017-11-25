@@ -10,19 +10,28 @@ export const PortfolioSetupRowWrapper = glamorous.div({
   gridGap: '15px',
 });
 
-function PortfolioSetupInputRow({ values = {}, currencieCodeNamePairs = [], index, onChange, onAutosuggestSelect }) {
+function PortfolioSetupInputRow({
+  values = {},
+  currencieCodeNamePairs = [],
+  index,
+  onChange,
+  onAutosuggestSelect,
+  onBlur,
+}) {
   return (
     <PortfolioSetupRowWrapper>
       <CurrencyCodeInput
         name={`${index}.code`}
         value={values.code}
         onChange={onChange}
+        onBlur={onBlur}
         onSelect={onAutosuggestSelect}
         currencieCodeNamePairs={currencieCodeNamePairs} />
       <div>
         <Input
           name={`${index}.number`}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder="100"
           value={values.number} />
       </div>
@@ -30,6 +39,7 @@ function PortfolioSetupInputRow({ values = {}, currencieCodeNamePairs = [], inde
         <Input
           name={`${index}.purchaseCost`}
           onChange={onChange}
+          onBlur={onBlur}
           placeholder="10000"
           value={values.purchaseCost} />
       </div>
@@ -43,6 +53,7 @@ PortfolioSetupInputRow.propTypes = {
   index: PropTypes.number,
   onChange: PropTypes.func,
   onAutosuggestSelect: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default PortfolioSetupInputRow;

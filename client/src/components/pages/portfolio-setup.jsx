@@ -10,19 +10,100 @@ import Button from '../atoms/button';
 class PortfolioSetup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      values: props.portfolioItems,
+    this.emptyRow = {
+      code: '',
+      number: '',
+      purchaseCost: '',
     };
-
+    this.state = this.createInitialState(props.portfolioItems);
+    this.intialPortfolioItems = props.portfolioItems;
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAutosuggestSelect = this.handleAutosuggestSelect.bind(this);
     this.addRow = this.addRow.bind(this);
+    this.handleInputBlur = this.handleInputBlur.bind(this);
+    this.updateFieldStates = this.updateFieldStates.bind(this);
+  }
+
+  createInitialState(portfolioItems) {
+    return {
+      values: [...(portfolioItems || []), { ...this.emptyRow }],
+      fieldStates: PortfolioSetup.prepareInitialFieldStates(portfolioItems),
+    };
+  }
+
+  static prepareInitialFieldStates(fieldValues) {
+    if (!fieldValues) return [];
+    return fieldValues.map(value =>
+      Object.keys(value).reduce(
+        (result, key) => ({
+          ...result,
+          [key]: {
+            touched: !(value[key] == null),
+            valid: true,
+          },
+        }), {},
+      ),
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.values && nextProps.portfolioItems) {
-      this.setState({ values: nextProps.portfolioItems });
+    if (!this.initialPortfolioItems && nextProps.portfolioItems) {
+      this.initialPortfolioItems = nextProps.portfolioItems;
+      this.setState(this.createInitialState(nextProps.portfolioItems));
     }
+  }
+
+  handleInputChange(e) {
+    e.preventDefault();
+    const [index, name] = e.target.name.split('.');
+    const values = this.state.values.slice();
+    values[index] = {
+      ...values[index],
+      [name]: e.target.value,
+    };
+    this.setState({ values });
+  }
+
+  handleInputBlur(e) {
+    const [index, name] = e.target.name.split('.');
+    this.updateFieldStates(index, name, this.state.values);
+  }
+
+  updateFieldStates(index, name, values) {
+    const fieldStates = this.state.fieldStates.slice();
+    fieldStates[index] = {
+      ...fieldStates[index],
+      [name]: {
+        touched: true,
+        valid: this.validateInput(),
+      },
+    };
+    if (parseInt(index, 10) === values.length - 1) {
+      this.addRow(values);
+    }
+    this.setState({ fieldStates });
+  }
+
+  handleAutosuggestSelect(index, value) {
+    const values = this.state.values.slice();
+    values[index] = {
+      ...values[index],
+      code: value,
+    };
+    this.setState({ values });
+    this.updateFieldStates(index, 'code', values);
+  }
+
+  validateInput() {
+    return true;
+  }
+
+  addRow(values = this.state.values) {
+    const updatedValues = [
+      ...values,
+      { ...this.emptyRow },
+    ];
+    this.setState({ values: updatedValues });
   }
 
   renderInputRows() {
@@ -37,38 +118,11 @@ class PortfolioSetup extends React.Component {
           index={index}
           currencieCodeNamePairs={currencieCodeNamePairs}
           onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
           onAutosuggestSelect={boundHandleAutosuggestSelect}
           values={item} />
       );
     });
-  }
-
-  handleInputChange(e) {
-    e.preventDefault();
-    const [index, name] = e.target.name.split('.');
-    const values = this.state.values.slice();
-    values[index] = {
-      ...values[index],
-      [name]: e.target.value,
-    };
-    this.setState({ values });
-  }
-
-  handleAutosuggestSelect(index, value) {
-    const values = this.state.values.slice();
-    values[index] = {
-      ...values[index],
-      code: value,
-    };
-    this.setState({ values });
-  }
-
-  addRow() {
-    const values = [
-      ...this.state.values,
-      {},
-    ];
-    this.setState({ values });
   }
 
   render() {
@@ -83,7 +137,6 @@ class PortfolioSetup extends React.Component {
             <label>Purchase price (optional)</label>
           </PortfolioSetupRowWrapper>
           { this.renderInputRows() }
-          <Button css={{ marginBottom: '15px' }} onClick={this.addRow}>Add row</Button>
           <Button onClick={this.addRow}>Save</Button>
         </CardBody>
       </form>
