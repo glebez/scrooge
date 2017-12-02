@@ -10,29 +10,18 @@ export const initialState = {
   error: null,
   totalPurchaseCost: null,
   totalPurchaseCurrency: null,
+  lastFetched: null,
 };
 
 export default function portfolio(state = initialState, action) {
   switch (action.type) {
     case Actions.FETCH_PORTFOLIO:
+    case Actions.SAVE_PORTFOLIO:
       return handle(state, action, {
         start: prevState => ({ ...prevState, isFetching: true, error: null }),
         finish: prevState => ({ ...prevState, isFetching: false }),
         failure: prevState => ({ ...prevState, error: getError(action) }),
-        success: (prevState) => {
-          const data = getData(action);
-          if (!data) return prevState;
-          const { items, totalPurchaseCost, totalPurchaseCurrency } = data;
-          return {
-            ...prevState,
-            items: {
-              all: prepareAllItems(items),
-              ordered: prepareOrderedItems(items),
-            },
-            totalPurchaseCost,
-            totalPurchaseCurrency,
-          };
-        },
+        success: prevState => handlePortfolioData(action, prevState),
       });
 
     case Actions.LOGOUT:
@@ -41,6 +30,22 @@ export default function portfolio(state = initialState, action) {
     default:
       return state;
   }
+}
+
+function handlePortfolioData(action, prevState) {
+  const data = getData(action);
+  if (!data) return prevState;
+  const { items, totalPurchaseCost, totalPurchaseCurrency } = data;
+  return {
+    ...prevState,
+    items: {
+      all: prepareAllItems(items),
+      ordered: prepareOrderedItems(items),
+    },
+    totalPurchaseCost,
+    totalPurchaseCurrency,
+    lastFetched: Date.now(),
+  };
 }
 
 function prepareAllItems(items) {
@@ -57,7 +62,8 @@ function getError(action) {
 }
 
 function getData(action) {
-  return action.payload && action.payload.data;
+  const payloadData = action.payload && action.payload.data;
+  return Array.isArray(payloadData) ? payloadData[0] : payloadData;
 }
 
 /**
@@ -75,8 +81,8 @@ export function selectPortfolioItemPairs(state) {
   }));
 }
 
-export function selectTotalPortfolioCost(state) {
-  return state.totalPurchaseCost;
+export function selectTotalPurchaseCost(state) {
+  return state && state.totalPurchaseCost;
 }
 
 export function selectOrderedPortfolioItems(state) {
@@ -85,4 +91,12 @@ export function selectOrderedPortfolioItems(state) {
       const { number, purchaseCost } = state.items.all[code];
       return { number, purchaseCost, code };
     });
+}
+
+export function selectTotalPurchaseCurrency(state) {
+  return state && state.totalPurchaseCurrency;
+}
+
+export function selectLastFetched(state) {
+  return state && state.lastFetched;
 }

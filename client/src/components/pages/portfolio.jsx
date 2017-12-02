@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { selectPortfolioCurrenciesData } from '../../reducers/currencies';
-import { selectPortfolioItemPairs, selectTotalPortfolioCost } from '../../reducers/portfolio';
+import { selectPortfolioItemPairs, selectTotalPurchaseCost } from '../../reducers/portfolio';
 import { selectToken } from '../../reducers/user';
 import PortfolioItem from '../molecules/portfolio-item';
 import Card from '../molecules/card';
@@ -60,7 +60,7 @@ function mapStateToProps(state) {
     state.currencies,
     portfolioItemPairs,
   );
-  const portfolioCost = selectTotalPortfolioCost(portfolio);
+  const portfolioCost = selectTotalPurchaseCost(portfolio);
   const summaryDataRows = selectSummaryData(portfolioCost, portfolioItems);
 
   return {

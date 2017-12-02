@@ -3,9 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardBody } from '../molecules/card';
 import PortfolioSetupInputRow, { PortfolioSetupRowWrapper } from '../molecules/portfolio-setup-input-row';
-import { selectOrderedPortfolioItems } from '../../reducers/portfolio';
+import {
+  selectOrderedPortfolioItems,
+  selectTotalPurchaseCost,
+  selectTotalPurchaseCurrency,
+  selectLastFetched,
+} from '../../reducers/portfolio';
 import { selectCurrencieCodeNamePairs } from '../../reducers/currencies';
+import { selectToken } from '../../reducers/user';
 import Button from '../atoms/button';
+import { savePortfolio } from '../../actions';
 
 class PortfolioSetup extends React.Component {
   constructor(props) {
@@ -16,12 +23,12 @@ class PortfolioSetup extends React.Component {
       purchaseCost: '',
     };
     this.state = this.createInitialState(props.portfolioItems);
-    this.intialPortfolioItems = props.portfolioItems;
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAutosuggestSelect = this.handleAutosuggestSelect.bind(this);
     this.addRow = this.addRow.bind(this);
     this.handleInputBlur = this.handleInputBlur.bind(this);
     this.updateFieldStates = this.updateFieldStates.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   createInitialState(portfolioItems) {
@@ -47,7 +54,7 @@ class PortfolioSetup extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.initialPortfolioItems && nextProps.portfolioItems) {
+    if (this.props.lastFetched !== nextProps.lastFetched) {
       this.initialPortfolioItems = nextProps.portfolioItems;
       this.setState(this.createInitialState(nextProps.portfolioItems));
     }
@@ -125,8 +132,21 @@ class PortfolioSetup extends React.Component {
     });
   }
 
+  onSave() {
+    const { dispatch, token, totalPurchaseCost, totalPurchaseCurrency } = this.props;
+    const { values } = this.state;
+    if (!token) return;
+    const portfolio = {
+      portfolio: {
+        totalPurchaseCost,
+        totalPurchaseCurrency,
+        items: values.filter(valueRow => valueRow.code && valueRow.number),
+      },
+    };
+    dispatch(savePortfolio(token, portfolio));
+  }
+
   render() {
-    // TODO: add saving fucntionality
     // TODO: add input validation
     return (
       <form onSubmit={e => e.preventDefault()}>
@@ -137,7 +157,7 @@ class PortfolioSetup extends React.Component {
             <label>Purchase price (optional)</label>
           </PortfolioSetupRowWrapper>
           { this.renderInputRows() }
-          <Button onClick={this.addRow}>Save</Button>
+          <Button onClick={this.onSave}>Save</Button>
         </CardBody>
       </form>
     );
@@ -147,16 +167,29 @@ class PortfolioSetup extends React.Component {
 PortfolioSetup.propTypes = {
   currencieCodeNamePairs: PropTypes.array,
   portfolioItems: PropTypes.array,
+  token: PropTypes.string,
+  dispatch: PropTypes.func,
+  totalPurchaseCost: PropTypes.string,
+  totalPurchaseCurrency: PropTypes.string,
+  lastFetched: PropTypes.number,
 };
 
 function mapStateToProps(state) {
-  const { currencies, portfolio } = state;
+  const { currencies, portfolio, user } = state;
   const currencieCodeNamePairs = selectCurrencieCodeNamePairs(currencies);
 
   const portfolioItems = selectOrderedPortfolioItems(portfolio);
+  const totalPurchaseCost = selectTotalPurchaseCost(portfolio);
+  const totalPurchaseCurrency = selectTotalPurchaseCurrency(portfolio);
+  const lastFetched = selectLastFetched(portfolio);
+  const token = selectToken(user);
   return {
     currencieCodeNamePairs,
     portfolioItems,
+    token,
+    totalPurchaseCost,
+    totalPurchaseCurrency,
+    lastFetched,
   };
 }
 

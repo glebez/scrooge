@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import { LIFECYCLE } from 'redux-pack';
-import reducer, { initialState } from '../portfolio.js';
+import sinon from 'sinon';
+import reducer, { initialState } from '../portfolio';
 import Actions from '../../actions/const';
 import { logout } from '../../actions';
 import { makePackAction, unknownAction } from '../../utils/tests';
@@ -63,6 +64,10 @@ describe('portfolio reducer', () => {
     });
 
     it('updates the state with data from successful async call', () => {
+      const clock = sinon.useFakeTimers({
+        now: 1483228800000,
+        shouldAdvanceTime: false,
+      });
       const payload = {
         data: {
           items: [{
@@ -90,10 +95,12 @@ describe('portfolio reducer', () => {
         },
         totalPurchaseCost: '10000',
         totalPurchaseCurrency: 'RUB',
+        lastFetched: 1483228800000,
       };
       const action = makePackAction(LIFECYCLE.SUCCESS, { type: Actions.FETCH_PORTFOLIO, payload });
       const result = reducer(initialState, action);
       assert.deepEqual(result, expectedResult);
+      clock.restore();
     });
   });
 });

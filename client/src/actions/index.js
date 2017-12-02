@@ -22,6 +22,20 @@ export function fetchPortfolio(token) {
   };
 }
 
+export function savePortfolio(token, portfolio) {
+  return {
+    type: Actions.SAVE_PORTFOLIO,
+    promise: axios({
+      url: '/api/portfolio',
+      method: 'post',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: portfolio,
+    }),
+  };
+}
+
 export function signup(email, password, confirmPassword, history) {
   return {
     type: Actions.SIGNUP,

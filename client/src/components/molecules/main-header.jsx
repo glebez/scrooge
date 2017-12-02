@@ -42,7 +42,7 @@ class MainHeader extends React.Component {
       return (
         <NavList>
           <NavItem>
-            <RouterLink to="/account">{username}</RouterLink>
+            <RouterLink to="/portfolio-setup">{username}</RouterLink>
           </NavItem>
           <NavItem>
             <RouterLink to="/logout">Log&nbsp;out</RouterLink>
