@@ -100,3 +100,7 @@ export function selectTotalPurchaseCurrency(state) {
 export function selectLastFetched(state) {
   return state && state.lastFetched;
 }
+
+export function selectIsFetching(state) {
+  return state && state.isFetching;
+}

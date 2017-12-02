@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import glamorous from 'glamorous';
 import { selectPortfolioCurrenciesData } from '../../reducers/currencies';
-import { selectPortfolioItemPairs, selectTotalPurchaseCost } from '../../reducers/portfolio';
+import { selectPortfolioItemPairs, selectTotalPurchaseCost, selectIsFetching } from '../../reducers/portfolio';
 import { selectToken } from '../../reducers/user';
 import PortfolioItem from '../molecules/portfolio-item';
 import Card from '../molecules/card';
+import ReloadButton from '../atoms/reload-button';
 import { fetchPortfolio } from '../../actions';
-
 
 const PortfolioHeading = glamorous.h1({
   marginBottom: '15px',
@@ -19,20 +19,31 @@ const PortfolioHeading = glamorous.h1({
 });
 
 class Portfolio extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fetchPortfolio = this.fetchPortfolio.bind(this);
+  }
   componentDidMount() {
-    const { token, portfolioItems, dispatch } = this.props;
-    if (token && (!portfolioItems || !portfolioItems.length)) {
+    this.fetchPortfolio();
+  }
+
+  fetchPortfolio() {
+    const { token, dispatch } = this.props;
+    if (token) {
       dispatch(fetchPortfolio(token));
     }
   }
 
   render() {
-    const { portfolioItems, summaryDataRows } = this.props;
+    const { portfolioItems, summaryDataRows, isFetching } = this.props;
     if (!portfolioItems || !portfolioItems.length) {
       return (<p>Your portfolio seems to be empty...</p>);
     }
     return (
       <div>
+        <ReloadButton onClick={this.fetchPortfolio} isSpinning={isFetching}>
+          <span>&#8635;</span>
+        </ReloadButton>
         <PortfolioHeading>Your portfolio</PortfolioHeading>
         <Card dataRows={summaryDataRows} css={{ marginBottom: '35px' }} />
         {
@@ -50,6 +61,7 @@ Portfolio.propTypes = {
   summaryDataRows: PropTypes.array,
   token: PropTypes.string,
   dispatch: PropTypes.func,
+  isFetching: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -62,11 +74,13 @@ function mapStateToProps(state) {
   );
   const portfolioCost = selectTotalPurchaseCost(portfolio);
   const summaryDataRows = selectSummaryData(portfolioCost, portfolioItems);
+  const isFetching = selectIsFetching(portfolio);
 
   return {
     portfolioItems,
     summaryDataRows,
     token,
+    isFetching,
   };
 }
 
