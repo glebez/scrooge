@@ -12,6 +12,7 @@ import {
 import { selectCurrencieCodeNamePairs } from '../../reducers/currencies';
 import { selectToken } from '../../reducers/user';
 import Button from '../atoms/button';
+import Input from '../atoms/input';
 import { savePortfolio } from '../../actions';
 
 class PortfolioSetup extends React.Component {
@@ -22,109 +23,157 @@ class PortfolioSetup extends React.Component {
       number: '',
       purchaseCost: '',
     };
-    this.state = this.createInitialState(props.portfolioItems);
+    this.state = this.createInitialState(props);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleCoinInputChange = this.handleCoinInputChange.bind(this);
     this.handleAutosuggestSelect = this.handleAutosuggestSelect.bind(this);
-    this.addRow = this.addRow.bind(this);
     this.handleInputBlur = this.handleInputBlur.bind(this);
     this.updateFieldStates = this.updateFieldStates.bind(this);
+    this.addRow = this.addRow.bind(this);
     this.onSave = this.onSave.bind(this);
   }
 
-  createInitialState(portfolioItems) {
+  createInitialState({ portfolioItems, totalPurchaseCost }) {
+    const fieldValues = {
+      totalPurchaseCost: totalPurchaseCost || '',
+      coins: [...(portfolioItems || []), { ...this.emptyRow }],
+    };
+    const fieldStates = PortfolioSetup.prepareInitialFieldStates(fieldValues);
     return {
-      values: [...(portfolioItems || []), { ...this.emptyRow }],
-      fieldStates: PortfolioSetup.prepareInitialFieldStates(portfolioItems),
+      fieldValues,
+      fieldStates,
     };
   }
 
   static prepareInitialFieldStates(fieldValues) {
-    if (!fieldValues) return [];
-    return fieldValues.map(value =>
-      Object.keys(value).reduce(
-        (result, key) => ({
-          ...result,
-          [key]: {
-            touched: !(value[key] == null),
+    if (!fieldValues) return {};
+    return Object.keys(fieldValues).reduce(
+      (result, key) => {
+        const fieldValue = fieldValues[key];
+        let fieldState;
+        if (Array.isArray(fieldValue)) {
+          fieldState = PortfolioSetup.prepareInitialFieldStates(fieldValue);
+        } else {
+          fieldState = {
+            touched: !(fieldValue == null),
             valid: true,
-          },
-        }), {},
-      ),
+          };
+        }
+        return {
+          ...result,
+          [key]: fieldState,
+        };
+      }, {},
     );
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.lastFetched !== nextProps.lastFetched) {
-      this.initialPortfolioItems = nextProps.portfolioItems;
-      this.setState(this.createInitialState(nextProps.portfolioItems));
+      this.setState(this.createInitialState(nextProps));
     }
   }
 
   handleInputChange(e) {
     e.preventDefault();
+    const { name, value } = e.target;
+    this.setState({
+      fieldValues: {
+        ...this.state.fieldValues,
+        [name]: value,
+      },
+    });
+  }
+
+  handleCoinInputChange(e) {
+    e.preventDefault();
     const [index, name] = e.target.name.split('.');
-    const values = this.state.values.slice();
-    values[index] = {
-      ...values[index],
+    const coins = this.state.fieldValues.coins.slice();
+    coins[index] = {
+      ...coins[index],
       [name]: e.target.value,
     };
-    this.setState({ values });
+    this.setState({
+      fieldValues: {
+        ...this.state.fieldValues,
+        coins,
+      },
+    });
   }
 
   handleInputBlur(e) {
     const [index, name] = e.target.name.split('.');
-    this.updateFieldStates(index, name, this.state.values);
+    this.updateFieldStates(index, name, this.state.fieldValues);
   }
 
-  updateFieldStates(index, name, values) {
-    const fieldStates = this.state.fieldStates.slice();
-    fieldStates[index] = {
-      ...fieldStates[index],
-      [name]: {
-        touched: true,
-        valid: this.validateInput(),
-      },
-    };
-    if (parseInt(index, 10) === values.length - 1) {
-      this.addRow(values);
+  updateFieldStates(index, name, fieldValues) {
+    if (name) {
+      const coins = this.state.fieldStates.coins.slice();
+      coins[index] = {
+        ...coins[index],
+        [name]: {
+          touched: true,
+          valid: this.validateInput(),
+        },
+      };
+      if (parseInt(index, 10) === fieldValues.coins.length - 1) {
+        this.addRow(fieldValues);
+      }
+      this.setState({
+        fieldStates: {
+          ...this.state.fieldStates,
+          coins,
+        },
+      });
+    } else {
+      this.setState({
+        fieldStates: {
+          ...this.state.fieldStates,
+          [index]: {
+            touched: true,
+            valid: this.validateInput(),
+          },
+        },
+      });
     }
-    this.setState({ fieldStates });
   }
 
   handleAutosuggestSelect(index, value) {
-    const values = this.state.values.slice();
-    values[index] = {
-      ...values[index],
+    const fieldValues = this.state.fieldValues.slice();
+    fieldValues[index] = {
+      ...fieldValues[index],
       code: value,
     };
-    this.setState({ values });
-    this.updateFieldStates(index, 'code', values);
+    this.setState({ fieldValues });
+    this.updateFieldStates(index, 'code', fieldValues);
   }
 
   validateInput() {
     return true;
   }
 
-  addRow(values = this.state.values) {
-    const updatedValues = [
-      ...values,
-      { ...this.emptyRow },
-    ];
-    this.setState({ values: updatedValues });
+  addRow(fieldValues = this.state.fieldValues) {
+    const updatedValues = {
+      ...fieldValues,
+      coins: [
+        ...fieldValues.coins,
+        { ...this.emptyRow },
+      ],
+    };
+    this.setState({ fieldValues: updatedValues });
   }
 
   renderInputRows() {
     const { currencieCodeNamePairs } = this.props;
-    const values = this.state.values || [{}];
+    const fieldValues = this.state.fieldValues.coins || [{}];
 
-    return values.map((item, index) => {
+    return fieldValues.map((item, index) => {
       const boundHandleAutosuggestSelect = value => this.handleAutosuggestSelect(index, value);
       return (
         <PortfolioSetupInputRow
           key={index}
           index={index}
           currencieCodeNamePairs={currencieCodeNamePairs}
-          onChange={this.handleInputChange}
+          onChange={this.handleCoinInputChange}
           onBlur={this.handleInputBlur}
           onAutosuggestSelect={boundHandleAutosuggestSelect}
           values={item} />
@@ -133,14 +182,14 @@ class PortfolioSetup extends React.Component {
   }
 
   onSave() {
-    const { dispatch, token, totalPurchaseCost, totalPurchaseCurrency } = this.props;
-    const { values } = this.state;
+    const { dispatch, token, totalPurchaseCurrency } = this.props;
+    const { fieldValues: { coins, totalPurchaseCost } } = this.state;
     if (!token) return;
     const portfolio = {
       portfolio: {
-        totalPurchaseCost,
         totalPurchaseCurrency,
-        items: values.filter(valueRow => valueRow.code && valueRow.number),
+        totalPurchaseCost,
+        items: coins.filter(valueRow => valueRow.code && valueRow.number),
       },
     };
     dispatch(savePortfolio(token, portfolio));
@@ -148,9 +197,16 @@ class PortfolioSetup extends React.Component {
 
   render() {
     // TODO: add input validation
+    const { totalPurchaseCost } = this.state.fieldValues;
     return (
       <form onSubmit={e => e.preventDefault()}>
         <CardBody>
+          <label htmlFor="totalPurchaseCost">Total Purchase Cost</label>
+          <Input
+            name="totalPurchaseCost"
+            value={totalPurchaseCost}
+            onChange={this.handleInputChange}
+          />
           <PortfolioSetupRowWrapper>
             <label>Coin code</label>
             <label>Amount owned</label>
@@ -169,7 +225,7 @@ PortfolioSetup.propTypes = {
   portfolioItems: PropTypes.array,
   token: PropTypes.string,
   dispatch: PropTypes.func,
-  totalPurchaseCost: PropTypes.string,
+  totalPurchaseCost: PropTypes.number,
   totalPurchaseCurrency: PropTypes.string,
   lastFetched: PropTypes.number,
 };
