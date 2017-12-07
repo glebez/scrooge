@@ -4,13 +4,20 @@ import glamorous from 'glamorous';
 import Input from '../atoms/input';
 import CurrencyCodeInput from '../molecules/currency-code-input';
 
-export const PortfolioSetupRowWrapper = glamorous.div({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridGap: '15px',
-});
+function generateColumns(colNum) {
+  return Array(colNum).fill('1fr').join(' ');
+}
 
-function PortfolioSetupInputRow({
+export const InputRowWrapper = glamorous.div({
+  display: 'grid',
+  gridGap: '15px',
+},
+({ colNum }) => ({
+  gridTemplateColumns: generateColumns(colNum),
+}),
+);
+
+function CoinInputRow({
   values = {},
   currencieCodeNamePairs = [],
   index,
@@ -19,7 +26,7 @@ function PortfolioSetupInputRow({
   onBlur,
 }) {
   return (
-    <PortfolioSetupRowWrapper>
+    <InputRowWrapper colNum={3}>
       <CurrencyCodeInput
         name={`${index}.code`}
         value={values.code}
@@ -40,14 +47,14 @@ function PortfolioSetupInputRow({
           name={`${index}.purchaseCost`}
           onChange={onChange}
           onBlur={onBlur}
-          placeholder="10000"
+          placeholder="10000 (optional)"
           value={values.purchaseCost} />
       </div>
-    </PortfolioSetupRowWrapper>
+    </InputRowWrapper>
   );
 }
 
-PortfolioSetupInputRow.propTypes = {
+CoinInputRow.propTypes = {
   values: PropTypes.object,
   currencieCodeNamePairs: PropTypes.array,
   index: PropTypes.number,
@@ -56,4 +63,4 @@ PortfolioSetupInputRow.propTypes = {
   onBlur: PropTypes.func,
 };
 
-export default PortfolioSetupInputRow;
+export default CoinInputRow;

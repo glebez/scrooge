@@ -9,7 +9,7 @@ import { selectToken } from '../../reducers/user';
 import PortfolioItem from '../molecules/portfolio-item';
 import Card from '../molecules/card';
 import ReloadButton from '../atoms/reload-button';
-import { fetchPortfolio } from '../../actions';
+import { fetchPortfolio, fetchCurrencies } from '../../actions';
 
 const PortfolioHeading = glamorous.h1({
   marginBottom: '15px',
@@ -21,7 +21,7 @@ const PortfolioHeading = glamorous.h1({
 class Portfolio extends React.Component {
   constructor(props) {
     super(props);
-    this.fetchPortfolio = this.fetchPortfolio.bind(this);
+    this.fetchCurrencies = this.fetchCurrencies.bind(this);
   }
   componentDidMount() {
     this.fetchPortfolio();
@@ -34,6 +34,11 @@ class Portfolio extends React.Component {
     }
   }
 
+  fetchCurrencies() {
+    const { dispatch } = this.props;
+    dispatch(fetchCurrencies());
+  }
+
   render() {
     const { portfolioItems, summaryDataRows, isFetching } = this.props;
     if (!portfolioItems || !portfolioItems.length) {
@@ -41,7 +46,7 @@ class Portfolio extends React.Component {
     }
     return (
       <div>
-        <ReloadButton onClick={this.fetchPortfolio} isSpinning={isFetching}>
+        <ReloadButton onClick={this.fetchCurrencies} isSpinning={isFetching}>
           <span>&#8635;</span>
         </ReloadButton>
         <PortfolioHeading>Your portfolio</PortfolioHeading>

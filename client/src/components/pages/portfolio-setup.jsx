@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardBody } from '../molecules/card';
-import PortfolioSetupInputRow, { PortfolioSetupRowWrapper } from '../molecules/portfolio-setup-input-row';
+import CoinInputRow, { InputRowWrapper } from '../molecules/coin-input-row';
 import {
   selectOrderedPortfolioItems,
   selectTotalPurchaseCost,
@@ -13,6 +13,7 @@ import { selectCurrencieCodeNamePairs } from '../../reducers/currencies';
 import { selectToken } from '../../reducers/user';
 import Button from '../atoms/button';
 import Input from '../atoms/input';
+import Label from '../atoms/label';
 import { savePortfolio } from '../../actions';
 
 class PortfolioSetup extends React.Component {
@@ -169,7 +170,7 @@ class PortfolioSetup extends React.Component {
     return fieldValues.map((item, index) => {
       const boundHandleAutosuggestSelect = value => this.handleAutosuggestSelect(index, value);
       return (
-        <PortfolioSetupInputRow
+        <CoinInputRow
           key={index}
           index={index}
           currencieCodeNamePairs={currencieCodeNamePairs}
@@ -201,17 +202,19 @@ class PortfolioSetup extends React.Component {
     return (
       <form onSubmit={e => e.preventDefault()}>
         <CardBody>
-          <label htmlFor="totalPurchaseCost">Total Purchase Cost</label>
-          <Input
-            name="totalPurchaseCost"
-            value={totalPurchaseCost}
-            onChange={this.handleInputChange}
-          />
-          <PortfolioSetupRowWrapper>
-            <label>Coin code</label>
-            <label>Amount owned</label>
-            <label>Purchase price (optional)</label>
-          </PortfolioSetupRowWrapper>
+          <InputRowWrapper colNum={2}>
+            <Label htmlFor="totalPurchaseCost" verticallyCentered>Total Purchase Cost</Label>
+            <Input
+              name="totalPurchaseCost"
+              value={totalPurchaseCost}
+              onChange={this.handleInputChange}
+            />
+          </InputRowWrapper>
+          <InputRowWrapper colNum={3}>
+            <Label>Coin code</Label>
+            <Label>Amount owned</Label>
+            <Label>Purchase cost</Label>
+          </InputRowWrapper>
           { this.renderInputRows() }
           <Button onClick={this.onSave}>Save</Button>
         </CardBody>
