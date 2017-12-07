@@ -10,6 +10,7 @@ const intialState = {
 
 export default function currencies(state = intialState, action) {
   switch (action.type) {
+    // TODO: Check last_updated on the payload to prevent unnecessary rerenders
     case Actions.FETCH_CURRENCIES:
       return handle(state, action, {
         start: prevState => ({ ...prevState, isFetching: true, error: null }),
@@ -98,6 +99,7 @@ function selectPortfolioCurrencyData(currency, number = 1) {
  * @return Object[]
  */
 export function selectPortfolioCurrenciesData(state, portfolioData) {
+  if (!state || !state.all) return [];
   return portfolioData.map(portfolioItem => (
     selectPortfolioCurrencyData(state.all[portfolioItem.symbol], portfolioItem.number)
   ));

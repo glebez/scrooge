@@ -11,6 +11,7 @@ import { fetchCurrencies, fetchPortfolio, logout } from './actions';
 import { createStorageUtils } from './utils/auth';
 import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
+import LoadIcon from './components/atoms/load-icon';
 import MainHeader from './components/molecules/main-header';
 import Portfolio from './components/pages/portfolio';
 import Login from './components/pages/login';
@@ -39,6 +40,11 @@ class Scrooge extends React.Component {
     if (token) {
       dispatch(fetchPortfolio(token));
     }
+    this.currenciesFetchInterval = setInterval(() => dispatch(fetchCurrencies()), 30000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.currenciesFetchInterval);
   }
 
   renderIndex() {
@@ -48,28 +54,17 @@ class Scrooge extends React.Component {
   }
 
   renderPortfolio() {
-    const {
-      currencies,
-      user,
-      portfolio,
-      dispatch,
-    } = this.props;
-    const token = selectToken(user);
-    const { error, isFetching } = currencies;
-    if (isFetching) return (<p>Fetching data...</p>);
+    const { currencies: { error } = {} } = this.props;
     return (
       error
         ? <div className="error">{error}</div>
-        : <Portfolio currencies={currencies} token={token} portfolio={portfolio} dispatch={dispatch} />
+        : <Portfolio />
     );
   }
 
   renderMarket() {
-    const {
-      currencies,
-    } = this.props;
-    const { error, isFetching } = currencies;
-    if (isFetching) return (<p>Fetching data...</p>);
+    const { currencies: { error, isFetching, all } = {} } = this.props;
+    if (!all && isFetching) return (<p>Fetching data...</p>);
     return (
       error
         ? <div className="error">{error}</div>
@@ -91,11 +86,14 @@ class Scrooge extends React.Component {
   }
 
   render() {
-    const { user, dispatch } = this.props;
+    const { user, dispatch, currencies: { isFetching } = {} } = this.props;
     return (
       <div>
         <MainHeader username={selectName(user)} dispatch={dispatch} />
         <Container>
+          <LoadIcon isVisible={isFetching}>
+            <span>&#8635;</span>
+          </LoadIcon>
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />

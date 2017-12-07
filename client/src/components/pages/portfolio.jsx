@@ -8,8 +8,7 @@ import { selectPortfolioItemPairs, selectTotalPurchaseCost, selectIsFetching } f
 import { selectToken } from '../../reducers/user';
 import PortfolioItem from '../molecules/portfolio-item';
 import Card from '../molecules/card';
-import ReloadButton from '../atoms/reload-button';
-import { fetchPortfolio, fetchCurrencies } from '../../actions';
+import { fetchPortfolio } from '../../actions';
 
 const PortfolioHeading = glamorous.h1({
   marginBottom: '15px',
@@ -19,10 +18,6 @@ const PortfolioHeading = glamorous.h1({
 });
 
 class Portfolio extends React.Component {
-  constructor(props) {
-    super(props);
-    this.fetchCurrencies = this.fetchCurrencies.bind(this);
-  }
   componentDidMount() {
     this.fetchPortfolio();
   }
@@ -34,21 +29,13 @@ class Portfolio extends React.Component {
     }
   }
 
-  fetchCurrencies() {
-    const { dispatch } = this.props;
-    dispatch(fetchCurrencies());
-  }
-
   render() {
-    const { portfolioItems, summaryDataRows, isFetching } = this.props;
+    const { portfolioItems, summaryDataRows } = this.props;
     if (!portfolioItems || !portfolioItems.length) {
       return (<p>Your portfolio seems to be empty...</p>);
     }
     return (
       <div>
-        <ReloadButton onClick={this.fetchCurrencies} isSpinning={isFetching}>
-          <span>&#8635;</span>
-        </ReloadButton>
         <PortfolioHeading>Your portfolio</PortfolioHeading>
         <Card dataRows={summaryDataRows} css={{ marginBottom: '35px' }} />
         {

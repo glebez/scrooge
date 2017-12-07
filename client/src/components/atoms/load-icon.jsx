@@ -6,7 +6,7 @@ const spin = css.keyframes({
   '100%': { transform: 'rotate(360deg)' },
 });
 
-const ReloadButton = glamorous.button({
+const LoadIcon = glamorous.button({
   position: 'fixed',
   right: '30px',
   top: '100px',
@@ -16,20 +16,14 @@ const ReloadButton = glamorous.button({
   border: 'none',
   borderRadius: '5px',
   color: '#fff',
+  transition: 'opacity 1s ease-in-out',
   '& span': {
     display: 'inline-block',
+    animation: `${spin} 1s infinite linear`,
   },
 },
-({ isSpinning }) => {
-  if (isSpinning) {
-    return {
-      '& span': {
-        animation: `${spin} 5s infinite linear`,
-      },
-    };
-  }
-  return {};
-},
-);
+({ isVisible }) => ({
+  opacity: isVisible ? 1 : 0,
+}));
 
-export default ReloadButton;
+export default LoadIcon;
