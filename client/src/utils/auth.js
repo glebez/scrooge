@@ -34,14 +34,20 @@ export function createStorageUtils(storage) {
 
 const storageUtils = createStorageUtils();
 
-export function getUserData(serverResponse) {
-  const { user: name, token } = serverResponse || {};
+export function getUserData(payload) {
+  const { user: name, token } = (payload && payload.data) || {};
   if (!name || !token) return null;
   return { name, token };
 }
 
+export function getErrorMessage(payload) {
+  const data = payload && payload.response && payload.response.data;
+  const { message: error } = data || {};
+  return { error };
+}
+
 export function handleAuthSuccess(result, history) {
   redirectAfterAuth(history);
-  const { name, token } = getUserData(result.data);
+  const { name, token } = getUserData(result);
   storageUtils.storeUserData(name, token);
 }

@@ -71,3 +71,10 @@ export function logout() {
     type: Actions.LOGOUT,
   };
 }
+
+export function dismissError(type) {
+  return {
+    type: Actions.DISMISS_ERROR,
+    payload: { type },
+  };
+}

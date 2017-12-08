@@ -1,20 +1,32 @@
 import { handle } from 'redux-pack';
 import Actions from '../actions/const';
-import { getUserData } from '../utils/auth';
+import { getUserData, getErrorMessage } from '../utils/auth';
 
 const initialState = {
   name: null,
   token: null,
+  error: null,
 };
 
 export default function user(state = initialState, action) {
   switch (action.type) {
+    case Actions.DISMISS_ERROR: {
+      if (action.payload.type !== 'user') return state;
+      return {
+        ...state,
+        error: null,
+      };
+    }
     case Actions.SIGNUP:
     case Actions.LOGIN:
       return handle(state, action, {
+        failure: prevState => ({
+          ...prevState,
+          ...getErrorMessage(action.payload),
+        }),
         success: (prevState) => {
-          const { data } = action.payload;
-          return getUserData(data) || prevState;
+          const userData = getUserData(action.payload);
+          return userData ? { ...userData, error: null } : prevState;
         },
       });
     case Actions.SET_USER: {
@@ -34,4 +46,8 @@ export function selectToken(state) {
 
 export function selectName(state) {
   return state && state.name;
+}
+
+export function selectError(state) {
+  return state && state.error;
 }

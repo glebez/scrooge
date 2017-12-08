@@ -13,6 +13,7 @@ import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
 import LoadIcon from './components/atoms/load-icon';
 import MainHeader from './components/molecules/main-header';
+import NotificationCentre from './components/molecules/notification-centre';
 import Portfolio from './components/pages/portfolio';
 import Login from './components/pages/login';
 import Signup from './components/pages/signup';
@@ -94,6 +95,7 @@ class Scrooge extends React.Component {
           <LoadIcon isVisible={isFetching}>
             <span>&#8635;</span>
           </LoadIcon>
+          <NotificationCentre />
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />
