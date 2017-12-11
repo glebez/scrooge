@@ -11,7 +11,7 @@ const initialState = {
 export default function user(state = initialState, action) {
   switch (action.type) {
     case Actions.DISMISS_ERROR: {
-      if (action.payload.type !== 'user') return state;
+      if (action.payload.type !== 'user' && action.payload.type !== 'all') return state;
       return {
         ...state,
         error: null,

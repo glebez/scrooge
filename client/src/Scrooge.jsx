@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, fetchPortfolio, logout } from './actions';
+import { fetchCurrencies, fetchPortfolio, logout, dismissError } from './actions';
 import { createStorageUtils } from './utils/auth';
 import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
@@ -25,6 +25,7 @@ class Scrooge extends React.Component {
   constructor(props) {
     super(props);
     this.storageUtils = createStorageUtils();
+    this.stopHistoryListener = () => {};
 
     this.renderPortfolio = this.renderPortfolio.bind(this);
     this.renderSignup = this.renderSignup.bind(this);
@@ -35,17 +36,27 @@ class Scrooge extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch, user } = this.props;
+    const { dispatch, user, history } = this.props;
     const token = selectToken(user);
     dispatch(fetchCurrencies());
     if (token) {
       dispatch(fetchPortfolio(token));
     }
+
+    this.stopHistoryListener = history.listen(() => {
+      this.dismissAllErrors();
+    });
     this.currenciesFetchInterval = setInterval(() => dispatch(fetchCurrencies()), 30000);
   }
 
   componentWillUnmount() {
     clearInterval(this.currenciesFetchInterval);
+    this.stopHistoryListener();
+  }
+
+  dismissAllErrors() {
+    const { dispatch } = this.props;
+    dispatch(dismissError('all'));
   }
 
   renderIndex() {
@@ -114,6 +125,7 @@ Scrooge.propTypes = {
   currencies: PropTypes.object,
   user: PropTypes.object,
   dispatch: PropTypes.func,
+  history: PropTypes.object,
 };
 
 export default withRouter(connect(state => state)(Scrooge));
