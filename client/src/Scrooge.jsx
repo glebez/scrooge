@@ -14,6 +14,7 @@ import Container from './components/atoms/container';
 import LoadIcon from './components/atoms/load-icon';
 import MainHeader from './components/molecules/main-header';
 import NotificationCentre from './components/molecules/notification-centre';
+import PrivateRoute from './components/molecules/private-route';
 import Portfolio from './components/pages/portfolio';
 import Login from './components/pages/login';
 import Signup from './components/pages/signup';
@@ -89,7 +90,9 @@ class Scrooge extends React.Component {
   }
 
   renderLogin(routeProps) {
-    return (<Login dispatch={this.props.dispatch} history={routeProps.history} />);
+    const { user, dispatch } = this.props;
+    const token = selectToken(user);
+    return token ? (<Redirect to='/' />) : (<Login dispatch={dispatch} history={routeProps.history} />);
   }
   renderLogout() {
     this.props.dispatch(logout());
@@ -99,6 +102,7 @@ class Scrooge extends React.Component {
 
   render() {
     const { user, dispatch, currencies: { isFetching } = {} } = this.props;
+    const token = selectToken(user);
     return (
       <div>
         <MainHeader username={selectName(user)} dispatch={dispatch} />
@@ -107,13 +111,15 @@ class Scrooge extends React.Component {
             <span>&#8635;</span>
           </LoadIcon>
           <NotificationCentre />
+
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />
           <Route path="/signup" exact render={this.renderSignup} />
-          <Route path="/logout" exact render={this.renderLogout} />
-          <Route path="/portfolio" exact render={this.renderPortfolio} />
           <Route path="/market" exact render={this.renderMarket} />
-          <Route path="/portfolio-setup" exact component={PortfolioSetup} />
+
+          <PrivateRoute path="/logout" exact render={this.renderLogout} token={token} />
+          <PrivateRoute path="/portfolio" exact render={this.renderPortfolio} token={token} />
+          <PrivateRoute path="/portfolio-setup" exact component={PortfolioSetup} token={token} />
         </Container>
       </div>
     );
