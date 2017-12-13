@@ -78,3 +78,17 @@ export function dismissError(type) {
     payload: { type },
   };
 }
+
+export function requestPasswordReset(email) {
+  return {
+    type: Actions.REQUEST_PASSWORD_RESET,
+    promise: axios.post('/auth/reset-password', { email }),
+  };
+}
+
+export function resetPassword(password, confirmPassword, resetToken) {
+  return {
+    type: Actions.RESET_PASSWORD,
+    promise: axios.post(`/auth/reset-password/${resetToken}`, { password, confirmPassword }),
+  };
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { H1, Div } from 'glamorous';
 import Input from '../atoms/input';
+import { RouterLink } from '../atoms/link';
 import { login } from '../../actions';
 
 class Login extends React.Component {
@@ -26,6 +27,9 @@ class Login extends React.Component {
           <Input type="password" name="password" placeholder="password" required/>
           <Input type="submit" value="Login"/>
         </form>
+        <Div css={{ textAlign: 'right', fontSize: '14px' }}>
+          <RouterLink to="/forgot">Yo, I think I forgot my password...</RouterLink>
+        </Div>
       </Div>
     );
   }

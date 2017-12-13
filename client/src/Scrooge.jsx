@@ -20,6 +20,8 @@ import Login from './components/pages/login';
 import Signup from './components/pages/signup';
 import Market from './components/pages/market';
 import PortfolioSetup from './components/pages/portfolio-setup';
+import ForgotPassword from './components/pages/forgot';
+import ResetPassword from './components/pages/reset';
 import './styles/globals';
 
 class Scrooge extends React.Component {
@@ -34,6 +36,8 @@ class Scrooge extends React.Component {
     this.renderLogout = this.renderLogout.bind(this);
     this.renderIndex = this.renderIndex.bind(this);
     this.renderMarket = this.renderMarket.bind(this);
+    this.renderForgotPassword = this.renderForgotPassword.bind(this);
+    this.renderResetPassword = this.renderResetPassword.bind(this);
   }
 
   componentDidMount() {
@@ -94,6 +98,19 @@ class Scrooge extends React.Component {
     const token = selectToken(user);
     return token ? (<Redirect to='/' />) : (<Login dispatch={dispatch} history={routeProps.history} />);
   }
+
+  renderForgotPassword() {
+    const { user, dispatch } = this.props;
+    const token = selectToken(user);
+    return token ? (<Redirect to='/' />) : (<ForgotPassword dispatch={dispatch} />);
+  }
+
+  renderResetPassword(routeProps) {
+    const { user, dispatch } = this.props;
+    const token = selectToken(user);
+    return token ? (<Redirect to='/' />) : (<ResetPassword dispatch={dispatch} match={routeProps.match} />);
+  }
+
   renderLogout() {
     this.props.dispatch(logout());
     this.storageUtils.removeUserData();
@@ -114,6 +131,8 @@ class Scrooge extends React.Component {
 
           <Route path="/" exact render={this.renderIndex} />
           <Route path="/login" exact render={this.renderLogin} />
+          <Route path="/forgot" exact render={this.renderForgotPassword} />
+          <Route path="/reset/:resetToken" exact render={this.renderResetPassword} />
           <Route path="/signup" exact render={this.renderSignup} />
           <Route path="/market" exact render={this.renderMarket} />
 
