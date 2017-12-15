@@ -50,7 +50,7 @@ function renderFullPage(html, css, ids, preloadedState) {
           window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
           window.__REHYDRATION_IDS__ = ${JSON.stringify(ids)}
         </script>
-        <script src="static/bundle.js"></script>
+        <script src="/static/bundle.js"></script>
       </body>
     </html>
     `;
