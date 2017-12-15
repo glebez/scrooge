@@ -3,12 +3,12 @@ import { Route, Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 
 
-function PrivateRoute({ component: Component, render, token, ...rest }) {
+function PrivateRoute({ component: Component, render, predicate, redirectPath = '/', ...rest }) {
   function renderRoute(props) {
-    if (!token) {
+    if (!predicate) {
       return (
         <Redirect to={{
-          pathname: '/login',
+          pathname: redirectPath,
         }}/>
       );
     }
@@ -31,6 +31,8 @@ PrivateRoute.propTypes = {
     PropTypes.func,
   ]),
   render: PropTypes.func,
+  predicate: PropTypes.bool,
+  redirectPath: PropTypes.string,
 };
 
 export default PrivateRoute;

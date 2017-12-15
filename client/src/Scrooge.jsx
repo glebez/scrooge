@@ -30,7 +30,6 @@ class Scrooge extends React.Component {
     this.storageUtils = createStorageUtils();
     this.stopHistoryListener = () => {};
 
-    this.renderPortfolio = this.renderPortfolio.bind(this);
     this.renderSignup = this.renderSignup.bind(this);
     this.renderLogin = this.renderLogin.bind(this);
     this.renderLogout = this.renderLogout.bind(this);
@@ -67,16 +66,7 @@ class Scrooge extends React.Component {
   renderIndex() {
     const { user } = this.props;
     const token = selectToken(user);
-    return token ? this.renderPortfolio() : this.renderMarket();
-  }
-
-  renderPortfolio() {
-    const { currencies: { error } = {} } = this.props;
-    return (
-      error
-        ? <div className="error">{error}</div>
-        : <Portfolio />
-    );
+    return token ? <Redirect to='/portfolio' /> : <Redirect to='/market' />;
   }
 
   renderMarket() {
@@ -94,21 +84,18 @@ class Scrooge extends React.Component {
   }
 
   renderLogin(routeProps) {
-    const { user, dispatch } = this.props;
-    const token = selectToken(user);
-    return token ? (<Redirect to='/' />) : (<Login dispatch={dispatch} history={routeProps.history} />);
+    const { dispatch } = this.props;
+    return <Login dispatch={dispatch} history={routeProps.history} />;
   }
 
   renderForgotPassword() {
-    const { user, dispatch } = this.props;
-    const token = selectToken(user);
-    return token ? (<Redirect to='/' />) : (<ForgotPassword dispatch={dispatch} />);
+    const { dispatch } = this.props;
+    return <ForgotPassword dispatch={dispatch} />;
   }
 
   renderResetPassword(routeProps) {
-    const { user, dispatch } = this.props;
-    const token = selectToken(user);
-    return token ? (<Redirect to='/' />) : (<ResetPassword dispatch={dispatch} match={routeProps.match} />);
+    const { dispatch } = this.props;
+    return <ResetPassword dispatch={dispatch} match={routeProps.match} />;
   }
 
   renderLogout() {
@@ -130,15 +117,22 @@ class Scrooge extends React.Component {
           <NotificationCentre />
 
           <Route path="/" exact render={this.renderIndex} />
-          <Route path="/login" exact render={this.renderLogin} />
-          <Route path="/forgot" exact render={this.renderForgotPassword} />
-          <Route path="/reset/:resetToken" exact render={this.renderResetPassword} />
-          <Route path="/signup" exact render={this.renderSignup} />
           <Route path="/market" exact render={this.renderMarket} />
-
-          <PrivateRoute path="/logout" exact render={this.renderLogout} token={token} />
-          <PrivateRoute path="/portfolio" exact render={this.renderPortfolio} token={token} />
-          <PrivateRoute path="/portfolio-setup" exact component={PortfolioSetup} token={token} />
+          {/* Unauthenticated routes */}
+          <PrivateRoute path="/login" exact render={this.renderLogin} predicate={!token} />
+          <PrivateRoute path="/forgot" exact render={this.renderForgotPassword} predicate={!token} />
+          <PrivateRoute path="/reset/:resetToken" exact render={this.renderResetPassword} predicate={!token} />
+          <PrivateRoute path="/signup" exact render={this.renderSignup} predicate={!token}/>
+          {/* Authenticated routes */}
+          <PrivateRoute path="/logout" exact render={this.renderLogout} predicate={!!token} redirectPath="/login" />
+          <PrivateRoute path="/portfolio" exact component={Portfolio} predicate={!!token} redirectPath="/login" />
+          <PrivateRoute
+            exact
+            path="/portfolio-setup"
+            component={PortfolioSetup}
+            predicate={!!token}
+            redirectPath="/login"
+          />
         </Container>
       </div>
     );
