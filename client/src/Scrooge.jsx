@@ -121,7 +121,7 @@ class Scrooge extends React.Component {
           {/* Unauthenticated routes */}
           <PrivateRoute path="/login" exact render={this.renderLogin} predicate={!token} />
           <PrivateRoute path="/forgot" exact render={this.renderForgotPassword} predicate={!token} />
-          <PrivateRoute path="/reset/:resetToken" exact render={this.renderResetPassword} predicate={!token} />
+          <PrivateRoute path="/reset/:resetToken" render={this.renderResetPassword} predicate={!token} />
           <PrivateRoute path="/signup" exact render={this.renderSignup} predicate={!token}/>
           {/* Authenticated routes */}
           <PrivateRoute path="/logout" exact render={this.renderLogout} predicate={!!token} redirectPath="/login" />

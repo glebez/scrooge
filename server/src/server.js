@@ -7,8 +7,6 @@ import expressValidator from 'express-validator';
 import routes from './routes';
 import createJWTStrategy from './handlers/passport';
 
-require('dotenv').config({ path: 'variables.env' });
-
 mongoose.connect(process.env.DATABASE);
 mongoose.Promise = global.Promise;
 mongoose.connection.on('error', err =>

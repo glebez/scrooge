@@ -36,6 +36,8 @@ const userSchema = new mongoose.Schema({
       totalPurchaseCurrency: String,
     }],
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

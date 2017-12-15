@@ -1,13 +1,21 @@
 import express from 'express';
 import passport from 'passport';
 import handleRender from '../controllers/serverRenderController';
-import { registerUser, validateRegister, loginUser } from '../controllers/userController';
+import {
+  registerUser,
+  validateRegister,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+} from '../controllers/userController';
 import { savePortfolio, getPortfolio } from '../controllers/portfolioController';
 
 const router = express.Router();
 
 router.post('/auth/register', validateRegister, registerUser, loginUser);
 router.post('/auth/login', loginUser);
+router.post('/auth/reset-password/:resetToken', resetPassword, loginUser);
+router.post('/auth/reset-password', forgotPassword);
 
 router.post('/api/portfolio',
   passport.authenticate('jwt', { session: false }),

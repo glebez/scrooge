@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import promisify from 'es6-promisify';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import send from '../handlers/mail';
 
 require('../models/User.js');
 
@@ -36,7 +38,42 @@ export function validateRegister(req, res, next) {
 
 // TODO: add mail sending upon registration
 
-// TODO: add password reset functionality
+export async function forgotPassword(req, res) {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordExpires = Date.now() + 3600000;
+    await user.save();
+    const url = `http://${req.headers.host}/reset/${user.resetPasswordToken}`;
+    await send({
+      user,
+      subject: 'Password Reset',
+      url,
+    });
+  }
+
+  return res.send();
+}
+
+export async function resetPassword(req, res, next) {
+  const user = await User.findOne({
+    resetPasswordToken: req.params.resetToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(401).send('Password reset is invalid or has expired');
+  }
+
+  const setPassword = promisify(user.setPassword, user);
+  await setPassword(req.body.password);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+  req.body.email = user.email;
+  return next();
+}
 
 export function loginUser(req, res, next) {
   passport.authenticate('local', (err, user, passwordErr) => {

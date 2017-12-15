@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   target: 'node',
-  entry: ['babel-polyfill', './server/src/server.js'],
+  entry: ['babel-polyfill', './server/src/start.js'],
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist')

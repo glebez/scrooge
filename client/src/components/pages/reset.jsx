@@ -37,7 +37,7 @@ class Reset extends React.Component {
 
 Reset.propTypes = {
   dispatch: PropTypes.func,
-  match: PropTypes.string,
+  match: PropTypes.object,
 };
 
 export default Reset;
