@@ -91,7 +91,7 @@ class PortfolioSetup extends React.Component {
     const coins = this.state.fieldValues.coins.slice();
     coins[index] = {
       ...coins[index],
-      [name]: e.target.value,
+      [name]: e.target.value.toUpperCase(),
     };
     this.setState({
       fieldValues: {
