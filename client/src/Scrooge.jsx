@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
-import { fetchCurrencies, fetchPortfolio, logout, dismissError } from './actions';
+import { fetchCurrencies, fetchPortfolio, dismissError } from './actions';
 import { createStorageUtils } from './utils/auth';
 import { selectToken, selectName } from './reducers/user';
 import Container from './components/atoms/container';
@@ -17,6 +17,7 @@ import NotificationCentre from './components/molecules/notification-centre';
 import PrivateRoute from './components/molecules/private-route';
 import Portfolio from './components/pages/portfolio';
 import Login from './components/pages/login';
+import Logout from './components/pages/logout';
 import Signup from './components/pages/signup';
 import Market from './components/pages/market';
 import PortfolioSetup from './components/pages/portfolio-setup';
@@ -99,9 +100,8 @@ class Scrooge extends React.Component {
   }
 
   renderLogout() {
-    this.props.dispatch(logout());
-    this.storageUtils.removeUserData();
-    return (<Redirect to='/' />);
+    const { dispatch } = this.props;
+    return (<Logout dispatch={dispatch} storageUtils={this.storageUtils} />);
   }
 
   render() {
