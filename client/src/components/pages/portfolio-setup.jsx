@@ -53,7 +53,7 @@ class PortfolioSetup extends React.Component {
         const fieldValue = fieldValues[key];
         let fieldState;
         if (Array.isArray(fieldValue)) {
-          fieldState = PortfolioSetup.prepareInitialFieldStates(fieldValue);
+          fieldState = fieldValue.map(value => PortfolioSetup.prepareInitialFieldStates(value));
         } else {
           fieldState = {
             touched: !(fieldValue == null),
@@ -126,10 +126,11 @@ class PortfolioSetup extends React.Component {
         },
       });
     } else {
+      const fieldName = index;
       this.setState({
         fieldStates: {
           ...this.state.fieldStates,
-          [index]: {
+          [fieldName]: {
             touched: true,
             valid: this.validateInput(),
           },
@@ -139,13 +140,18 @@ class PortfolioSetup extends React.Component {
   }
 
   handleAutosuggestSelect(index, value) {
-    const fieldValues = this.state.fieldValues.slice();
-    fieldValues[index] = {
-      ...fieldValues[index],
+    const { fieldValues } = this.state;
+    const coins = fieldValues.coins.slice();
+    coins[index] = {
+      ...coins[index],
       code: value,
     };
-    this.setState({ fieldValues });
-    this.updateFieldStates(index, 'code', fieldValues);
+    const updatedFieldValues = {
+      ...fieldValues,
+      coins,
+    };
+    this.setState({ fieldValues: updatedFieldValues });
+    this.updateFieldStates(index, 'code', updatedFieldValues);
   }
 
   validateInput() {
