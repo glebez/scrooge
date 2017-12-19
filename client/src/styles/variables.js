@@ -9,4 +9,8 @@ export const colors = {
   ketchupRed: '#ac241c',
 };
 
+export const mediaQueries = {
+  phone: '@media only screen and (max-width: 500px)',
+};
+
 export default colors;

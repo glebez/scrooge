@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import CardContentRow from './card-content-row';
-import { colors } from '../../styles/variables';
+import { colors, mediaQueries } from '../../styles/variables';
 
 const cardBG = colors.paperYellow;
 
@@ -12,6 +12,9 @@ export const CardBody = glamorous.div({
   background: cardBG,
   background: `linear-gradient(135deg, transparent 20px, ${cardBG} 0)`, // eslint-disable-line no-dupe-keys
   borderRadius: '5px ',
+  [mediaQueries.phone]: {
+    paddingLeft: '20px',
+  },
 });
 
 class Card extends React.Component {

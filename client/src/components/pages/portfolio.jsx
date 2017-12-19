@@ -37,7 +37,7 @@ class Portfolio extends React.Component {
     return (
       <div>
         <PortfolioHeading>Your portfolio</PortfolioHeading>
-        <Card dataRows={summaryDataRows} css={{ marginBottom: '35px' }} />
+        <Card dataRows={summaryDataRows} css={{ marginBottom: '15px' }} />
         {
           portfolioItems.map(portfolioItemProps => (
             <PortfolioItem key={portfolioItemProps.symbol} valueSize="big" {...portfolioItemProps} />

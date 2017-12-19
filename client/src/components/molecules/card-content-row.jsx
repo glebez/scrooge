@@ -1,13 +1,19 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
+import LabeledItem from '../atoms/labeled-item';
 import VerticalDiff from './vertical-diff';
+import { mediaQueries } from '../../styles/variables';
 
 const CardContentRowWrapper = glamorous.div({
   display: 'grid',
   gridTemplateColumns: '1fr 2fr',
   '&:not(:first-child)': {
     marginTop: '20px',
+  },
+  [mediaQueries.phone]: {
+    gridTemplateColumns: '1fr',
+    gridColumnGap: '20px',
   },
 });
 
@@ -26,17 +32,25 @@ const Diffs = glamorous.div({
   '& div': {
     flexBasis: '33%',
   },
+  [mediaQueries.phone]: {
+    justifyContent: 'space-between',
+  },
 });
+
+const labeledItemCss = {
+  [mediaQueries.phone]: {
+    marginBottom: '20px',
+  }
+}
 
 function CardContentRow({ diffs, mainLabel, mainValue, valueCurrency, valueSize }) {
   return (
     <CardContentRowWrapper>
-      <div>
-        <p>{mainLabel}</p>
+      <LabeledItem label={mainLabel} css={labeledItemCss}>
         <CardContentValue size={valueSize}>
           { `${mainValue.toFixed(3)} ${valueCurrency}` }
         </CardContentValue>
-      </div>
+      </LabeledItem>
       <Diffs itemsCount={diffs && diffs.length}>
         { diffs.map(diff => (
           <VerticalDiff
