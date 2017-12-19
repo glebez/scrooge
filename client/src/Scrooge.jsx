@@ -107,9 +107,11 @@ class Scrooge extends React.Component {
   render() {
     const { user, dispatch, currencies: { isFetching } = {} } = this.props;
     const token = selectToken(user);
+    const name = selectName(user);
+    const username = name && name.split('@')[0];
     return (
       <div>
-        <MainHeader username={selectName(user)} dispatch={dispatch} />
+        <MainHeader username={username} dispatch={dispatch} />
         <Container>
           <LoadIcon isVisible={isFetching}>
             <span>&#8635;</span>
