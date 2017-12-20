@@ -40,8 +40,8 @@ const Diffs = glamorous.div({
 const labeledItemCss = {
   [mediaQueries.phone]: {
     marginBottom: '20px',
-  }
-}
+  },
+};
 
 function CardContentRow({ diffs, mainLabel, mainValue, valueCurrency, valueSize }) {
   return (

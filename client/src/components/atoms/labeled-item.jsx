@@ -40,7 +40,7 @@ const Label = glamorous.label(
       [mediaQueries.phone]: {
         marginBottom: '10px',
       },
-    }
+    };
     if (desktop !== 'vertical') {
       styles = {
         ...styles,
@@ -57,7 +57,7 @@ const Label = glamorous.label(
       };
     }
     return styles;
-  }
+  },
 );
 
 function LabeledItem({ children, label, css, alignment }) {
