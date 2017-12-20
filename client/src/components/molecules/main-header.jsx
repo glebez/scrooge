@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { colors } from '../../styles/variables';
 import ScroogeLogo from '../../styles/logo.svg';
 import { RouterLink } from '../atoms/link';
+import Dropdown from './dropdown';
 
 const LOGO_WIDTH = '60px';
 
@@ -22,8 +23,12 @@ const Logo = glamorous.img({
 const NavList = glamorous.ul({
   listStyle: 'none',
   display: 'flex',
-  justifyContent: 'flex-end',
-});
+  paddingLeft: 0,
+},
+({ alignment = 'right' }) => ({
+  justifyContent: alignment === 'right' ? 'flex-end' : 'felx-start',
+}),
+);
 
 const NavItem = glamorous.li({
   marginRight: '10px',
@@ -33,19 +38,36 @@ class MainHeader extends React.Component {
   constructor(props) {
     super(props);
     this.renderNav = this.renderNav.bind(this);
+    this.renderAuthNav = this.renderAuthNav.bind(this);
   }
 
-  // TODO: rethink navigation
   renderNav() {
+    const { username } = this.props;
+    if (username) {
+      return (
+        <NavList alignment="left">
+          <NavItem>
+            <RouterLink to="/market">Market</RouterLink>
+          </NavItem>
+          <NavItem>
+            <RouterLink to="/portfolio">Portfolio</RouterLink>
+          </NavItem>
+        </NavList>
+      );
+    }
+    return null;
+  }
+
+  renderAuthNav() {
     const { username } = this.props;
     if (username) {
       return (
         <NavList>
           <NavItem>
-            <RouterLink to="/portfolio-setup">{username}</RouterLink>
-          </NavItem>
-          <NavItem>
-            <RouterLink to="/logout">Log&nbsp;out</RouterLink>
+            <Dropdown linkText={username}>
+              <RouterLink to="/portfolio-setup">Setup Portfolio</RouterLink>
+              <RouterLink to="/logout">Log&nbsp;out</RouterLink>
+            </Dropdown>
           </NavItem>
         </NavList>
       );
@@ -65,15 +87,15 @@ class MainHeader extends React.Component {
   render() {
     return (
       <HeaderContainer>
-        <div></div>
+        <nav>
+          {this.renderNav()}
+        </nav>
         <RouterLink to="/">
           <Logo src={ScroogeLogo} />
         </RouterLink>
-        <div>
-          <nav>
-            {this.renderNav()}
-          </nav>
-        </div>
+        <nav>
+          {this.renderAuthNav()}
+        </nav>
       </HeaderContainer>
     );
   }
