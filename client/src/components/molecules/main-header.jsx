@@ -1,9 +1,10 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
-import { colors } from '../../styles/variables';
+import { colors, mediaQueries } from '../../styles/variables';
 import ScroogeLogo from '../../styles/logo.svg';
 import { RouterLink } from '../atoms/link';
+import Hamburger from '../atoms/hamburger-icon';
 import Dropdown from './dropdown';
 
 const LOGO_WIDTH = '60px';
@@ -14,24 +15,41 @@ const HeaderContainer = glamorous.div({
   backgroundColor: colors.paperYellow,
   display: 'grid',
   gridTemplateColumns: `1fr ${LOGO_WIDTH} 1fr`,
+  alignItems: 'center',
 });
 
 const Logo = glamorous.img({
   height: '50px',
+  [mediaQueries.phone]: {
+    height: '35px',
+  },
 });
 
 const NavList = glamorous.ul({
   listStyle: 'none',
   display: 'flex',
   paddingLeft: 0,
+  margin: 0,
 },
 ({ alignment = 'right' }) => ({
   justifyContent: alignment === 'right' ? 'flex-end' : 'felx-start',
 }),
+({ hideOnMobile = false }) => ({
+  [mediaQueries.phone]: {
+    display: hideOnMobile ? 'none' : 'flex',
+  },
+}),
+({ hideOnDesktop = false }) => ({
+  [mediaQueries.desktop]: {
+    display: hideOnDesktop ? 'none' : 'flex',
+  },
+}),
 );
 
 const NavItem = glamorous.li({
-  marginRight: '10px',
+  ':not(:last-child)': {
+    marginRight: '15px',
+  },
 });
 
 class MainHeader extends React.Component {
@@ -45,7 +63,7 @@ class MainHeader extends React.Component {
     const { username } = this.props;
     if (username) {
       return (
-        <NavList alignment="left">
+        <NavList alignment="left" hideOnMobile >
           <NavItem>
             <RouterLink to="/market">Market</RouterLink>
           </NavItem>
@@ -62,9 +80,9 @@ class MainHeader extends React.Component {
     const { username } = this.props;
     if (username) {
       return (
-        <NavList>
+        <NavList hideOnMobile >
           <NavItem>
-            <Dropdown linkText={username}>
+            <Dropdown linkContents={username}>
               <RouterLink to="/portfolio-setup">Setup Portfolio</RouterLink>
               <RouterLink to="/logout">Log&nbsp;out</RouterLink>
             </Dropdown>
@@ -73,12 +91,34 @@ class MainHeader extends React.Component {
       );
     }
     return (
-      <NavList>
+      <NavList hideOnMobile >
         <NavItem>
           <RouterLink to="/login">Log&nbsp;in</RouterLink>
         </NavItem>
         <NavItem>
           <RouterLink to="/signup">Sign&nbsp;up</RouterLink>
+        </NavItem>
+      </NavList>
+    );
+  }
+
+  renderMobileNav() {
+    const { username } = this.props;
+    return (
+      <NavList hideOnDesktop >
+        <NavItem>
+          <Dropdown linkContents={<Hamburger />}>
+            {username ?
+              [
+                <RouterLink key="/portfolio-setup" to="/portfolio-setup">Setup Portfolio</RouterLink>,
+                <RouterLink key="/logout" to="/logout">Log&nbsp;out</RouterLink>
+              ]
+              : [
+                <RouterLink key="/login" to="/login">Log&nbsp;in</RouterLink>,
+                <RouterLink key="/signup" to="/signup">Sign&nbsp;up</RouterLink>
+              ]
+            }
+          </Dropdown>
         </NavItem>
       </NavList>
     );
@@ -95,6 +135,7 @@ class MainHeader extends React.Component {
         </RouterLink>
         <nav>
           {this.renderAuthNav()}
+          {this.renderMobileNav()}
         </nav>
       </HeaderContainer>
     );

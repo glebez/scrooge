@@ -49,18 +49,17 @@ class Dropdown extends React.Component {
   }
 
   handleDropdownClose(e) {
-    console.log(this.linkEl);
-    if (e.target !== this.linkEl) {
+    if (this.state.isVisible && e.target !== this.linkEl && !this.linkEl.contains(e.target)) {
       this.setState({ isVisible: false });
     }
   }
 
   render() {
-    const { linkText, children } = this.props;
+    const { linkContents, children } = this.props;
     return (
       <Div css={{ position: 'relative' }} >
         <Link innerRef={(el) => { this.linkEl = el; return null; }} href="#" onClick={this.handleClick}>
-          {linkText}
+          {linkContents}
         </Link>
         <Body isVisible={this.state.isVisible}>
           { React.Children.map(children, child => <Item>{child}</Item>) }
@@ -71,7 +70,10 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  linkText: PropTypes.string,
+  linkContents: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
