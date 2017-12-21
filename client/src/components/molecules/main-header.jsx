@@ -133,7 +133,7 @@ class MainHeader extends React.Component {
         <nav>
           {this.renderNav()}
         </nav>
-        <RouterLink to={routes.index}>
+        <RouterLink to={routes.index} css={{ textAlign: 'center' }}>
           <Logo src={ScroogeLogo} />
         </RouterLink>
         <nav>
