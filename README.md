@@ -3,6 +3,8 @@
 
 Web app to track your cryptocurrencies portfolio.
 
+Check out the latest version running on https://www.scrooge.rocks/
+
 Built with react, redux and glamorous.
 
 Based on the API provided by https://coinmarketcap.com/

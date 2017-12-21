@@ -7,6 +7,13 @@ import expressValidator from 'express-validator';
 import routes from './routes';
 import createJWTStrategy from './handlers/passport';
 
+function forceSsl(req, res, next) {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  return next();
+}
+
 mongoose.connect(process.env.DATABASE);
 mongoose.Promise = global.Promise;
 mongoose.connection.on('error', err =>
@@ -21,6 +28,10 @@ passport.use(createJWTStrategy());
 
 const app = Express();
 const port = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(forceSsl);
+}
 
 app.use('/static', Express.static('./client/dist'));
 app.use(favicon('./client/dist/favicon.ico'));
