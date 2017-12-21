@@ -4,6 +4,7 @@ import { H1, Div } from 'glamorous';
 import Input from '../atoms/input';
 import { RouterLink } from '../atoms/link';
 import { login } from '../../actions';
+import routes from '../../routes';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class Login extends React.Component {
           <Input type="submit" value="Login"/>
         </form>
         <Div css={{ textAlign: 'right', fontSize: '14px' }}>
-          <RouterLink to="/forgot">Yo, I think I forgot my password...</RouterLink>
+          <RouterLink to={routes.forgot}>Yo, I think I forgot my password...</RouterLink>
         </Div>
       </Div>
     );

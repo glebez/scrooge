@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router';
 import PropTypes from 'prop-types';
+import routes from '../../routes';
 
-
-function PrivateRoute({ component: Component, render, predicate, redirectPath = '/', ...rest }) {
+function PrivateRoute({ component: Component, render, predicate, redirectPath = routes.index, ...rest }) {
   function renderRoute(props) {
     if (!predicate) {
       return (

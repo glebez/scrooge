@@ -23,6 +23,7 @@ import Market from './components/pages/market';
 import PortfolioSetup from './components/pages/portfolio-setup';
 import ForgotPassword from './components/pages/forgot';
 import ResetPassword from './components/pages/reset';
+import routes from './routes';
 import './styles/globals';
 
 class Scrooge extends React.Component {
@@ -67,7 +68,7 @@ class Scrooge extends React.Component {
   renderIndex() {
     const { user } = this.props;
     const token = selectToken(user);
-    return token ? <Redirect to='/portfolio' /> : <Redirect to='/market' />;
+    return token ? <Redirect to={routes.portfolio} /> : <Redirect to={routes.market} />;
   }
 
   renderMarket() {
@@ -118,22 +119,34 @@ class Scrooge extends React.Component {
           </LoadIcon>
           <NotificationCentre />
 
-          <Route path="/" exact render={this.renderIndex} />
-          <Route path="/market" exact render={this.renderMarket} />
+          <Route path={routes.index} exact render={this.renderIndex} />
+          <Route path={routes.market} exact render={this.renderMarket} />
           {/* Unauthenticated routes */}
-          <PrivateRoute path="/login" exact render={this.renderLogin} predicate={!token} />
-          <PrivateRoute path="/forgot" exact render={this.renderForgotPassword} predicate={!token} />
-          <PrivateRoute path="/reset/:resetToken" render={this.renderResetPassword} predicate={!token} />
-          <PrivateRoute path="/signup" exact render={this.renderSignup} predicate={!token}/>
+          <PrivateRoute path={routes.login} exact render={this.renderLogin} predicate={!token} />
+          <PrivateRoute path={routes.forgot} exact render={this.renderForgotPassword} predicate={!token} />
+          <PrivateRoute path={routes.reset} render={this.renderResetPassword} predicate={!token} />
+          <PrivateRoute path={routes.signup} exact render={this.renderSignup} predicate={!token}/>
           {/* Authenticated routes */}
-          <PrivateRoute path="/logout" exact render={this.renderLogout} predicate={!!token} redirectPath="/login" />
-          <PrivateRoute path="/portfolio" exact component={Portfolio} predicate={!!token} redirectPath="/login" />
           <PrivateRoute
             exact
-            path="/portfolio-setup"
+            path={routes.logout}
+            render={this.renderLogout}
+            predicate={!!token}
+            redirectPath={routes.login}
+          />
+          <PrivateRoute
+            exact
+            path={routes.portfolio}
+            component={Portfolio}
+            predicate={!!token}
+            redirectPath={routes.login}
+          />
+          <PrivateRoute
+            exact
+            path={routes.portfolioSetup}
             component={PortfolioSetup}
             predicate={!!token}
-            redirectPath="/login"
+            redirectPath={routes.login}
           />
         </Container>
       </div>

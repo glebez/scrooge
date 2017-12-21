@@ -6,6 +6,7 @@ import ScroogeLogo from '../../styles/logo.svg';
 import { RouterLink } from '../atoms/link';
 import Hamburger from '../atoms/hamburger-icon';
 import Dropdown from './dropdown';
+import routes from '../../routes';
 
 const LOGO_WIDTH = '60px';
 
@@ -65,10 +66,10 @@ class MainHeader extends React.Component {
       return (
         <NavList alignment="left" hideOnMobile >
           <NavItem>
-            <RouterLink to="/market">Market</RouterLink>
+            <RouterLink to={routes.market}>Market</RouterLink>
           </NavItem>
           <NavItem>
-            <RouterLink to="/portfolio">Portfolio</RouterLink>
+            <RouterLink to={routes.portfolio}>Portfolio</RouterLink>
           </NavItem>
         </NavList>
       );
@@ -83,8 +84,8 @@ class MainHeader extends React.Component {
         <NavList hideOnMobile >
           <NavItem>
             <Dropdown linkContents={username}>
-              <RouterLink to="/portfolio-setup">Setup Portfolio</RouterLink>
-              <RouterLink to="/logout">Log&nbsp;out</RouterLink>
+              <RouterLink to={routes.portfolioSetup}>Setup Portfolio</RouterLink>
+              <RouterLink to={routes.logout}>Log&nbsp;out</RouterLink>
             </Dropdown>
           </NavItem>
         </NavList>
@@ -93,10 +94,10 @@ class MainHeader extends React.Component {
     return (
       <NavList hideOnMobile >
         <NavItem>
-          <RouterLink to="/login">Log&nbsp;in</RouterLink>
+          <RouterLink to={routes.login}>Log&nbsp;in</RouterLink>
         </NavItem>
         <NavItem>
-          <RouterLink to="/signup">Sign&nbsp;up</RouterLink>
+          <RouterLink to={routes.signup}>Sign&nbsp;up</RouterLink>
         </NavItem>
       </NavList>
     );
@@ -110,12 +111,12 @@ class MainHeader extends React.Component {
           <Dropdown linkContents={<Hamburger />}>
             {username ?
               [
-                <RouterLink key="/portfolio-setup" to="/portfolio-setup">Setup Portfolio</RouterLink>,
-                <RouterLink key="/logout" to="/logout">Log&nbsp;out</RouterLink>
+                <RouterLink key={routes.portfolioSetup} to={routes.portfolioSetup}>Setup Portfolio</RouterLink>,
+                <RouterLink key={routes.logout} to={routes.logout}>Log&nbsp;out</RouterLink>,
               ]
               : [
-                <RouterLink key="/login" to="/login">Log&nbsp;in</RouterLink>,
-                <RouterLink key="/signup" to="/signup">Sign&nbsp;up</RouterLink>
+                <RouterLink key={routes.login} to={routes.login}>Log&nbsp;in</RouterLink>,
+                <RouterLink key={routes.signup} to={routes.signup}>Sign&nbsp;up</RouterLink>,
               ]
             }
           </Dropdown>
@@ -130,7 +131,7 @@ class MainHeader extends React.Component {
         <nav>
           {this.renderNav()}
         </nav>
-        <RouterLink to="/">
+        <RouterLink to={routes.index}>
           <Logo src={ScroogeLogo} />
         </RouterLink>
         <nav>
