@@ -111,6 +111,8 @@ class MainHeader extends React.Component {
           <Dropdown linkContents={<Hamburger />}>
             {username ?
               [
+                <RouterLink key={routes.portfolio} to={routes.portfolio}>Portfolio</RouterLink>,
+                <RouterLink key={routes.market} to={routes.market}>Market</RouterLink>,
                 <RouterLink key={routes.portfolioSetup} to={routes.portfolioSetup}>Setup Portfolio</RouterLink>,
                 <RouterLink key={routes.logout} to={routes.logout}>Log&nbsp;out</RouterLink>,
               ]
