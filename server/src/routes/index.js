@@ -7,15 +7,16 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
+  validateEmail,
 } from '../controllers/userController';
 import { savePortfolio, getPortfolio } from '../controllers/portfolioController';
 
 const router = express.Router();
 
 router.post('/auth/register', validateRegister, registerUser, loginUser);
-router.post('/auth/login', loginUser);
+router.post('/auth/login', validateEmail, loginUser);
 router.post('/auth/reset-password/:resetToken', resetPassword, loginUser);
-router.post('/auth/reset-password', forgotPassword);
+router.post('/auth/reset-password', validateEmail, forgotPassword);
 
 router.post('/api/portfolio',
   passport.authenticate('jwt', { session: false }),

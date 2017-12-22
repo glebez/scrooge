@@ -36,6 +36,19 @@ export function validateRegister(req, res, next) {
   next();
 }
 
+export function validateEmail(req, res, next) {
+  req.checkBody('email', 'Your email is not an email 😉').isEmail();
+  req.sanitizeBody('email').normalizeEmail();
+
+  const errors = req.validationErrors();
+
+  if (errors) {
+    res.status(500).send(errors);
+  }
+
+  next();
+}
+
 // TODO: add mail sending upon registration
 
 export async function forgotPassword(req, res) {
