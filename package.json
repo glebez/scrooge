@@ -7,15 +7,16 @@
     "node": "8.0.0"
   },
   "scripts": {
-    "webpack": "webpack",
+    "build": "NODE_ENV=\"production\" webpack --progress",
+    "dev": "nodemon --watch server/dist/ server/dist/server.js",
+    "heroku-postbuild": "npm run build",
+    "precommit": "npm test",
+    "start": "node server/dist/server.js",
+    "test": "mocha --require babel-register ./client/src/**/__tests__/*-test.js ./server/src/**/__tests__/*-test.js",
     "watch-sources": "parallel-webpack --watch",
     "watch-sources:client": "webpack --watch --progress --config client/webpack.client.config.js",
     "watch-sources:server": "webpack --watch --progress --config server/webpack.server.config.js",
-    "build": "NODE_ENV=\"production\" webpack --progress",
-    "start": "node server/dist/server.js",
-    "heroku-postbuild": "npm run build",
-    "dev": "nodemon --watch server/dist/ server/dist/server.js",
-    "test": "mocha --require babel-register ./client/src/**/__tests__/*-test.js ./server/src/**/__tests__/*-test.js"
+    "webpack": "webpack"
   },
   "author": "Gleb Kost",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.2.1",
+    "husky": "^0.14.3",
     "mocha": "^3.5.3",
     "parallel-webpack": "^2.1.0",
     "redux-devtools": "^3.4.0",

@@ -85,11 +85,11 @@ describe('auth utils', () => {
     });
 
     it('returns null if the provided response does not contain full set of credentials', () => {
-      assert.isNull(getUserData({user: 'bob'}));
+      assert.isNull(getUserData({ user: 'bob' }));
     });
 
     it('returns credentials object', () => {
-      const result = getUserData({ user: 'Bob', token: 'Hope', foo: 'bar' });
+      const result = getUserData({ data: { user: 'Bob', token: 'Hope', foo: 'bar' } });
       const expectedResult = { name: 'Bob', token: 'Hope' };
       assert.deepEqual(result, expectedResult);
     })

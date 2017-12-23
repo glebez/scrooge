@@ -49,7 +49,7 @@ function handlePortfolioData(action, prevState) {
 }
 
 function prepareAllItems(items) {
-  return items && items.reduce((prev, curr) => Object.assign({}, prev, { [curr.code]: curr }), {});
+  return items && items.reduce((prev, curr) => ({ ...prev, [curr.code]: curr }), {});
 }
 
 function prepareOrderedItems(items) {

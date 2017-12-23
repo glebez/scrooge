@@ -9,6 +9,7 @@ describe('user reducer', () => {
   const initialState = {
     name: null,
     token: null,
+    error: null,
   };
 
   it('returns unmodified state on unknown action', () => {
@@ -42,6 +43,7 @@ describe('user reducer', () => {
           const expectedState = {
             name: 'foo',
             token: 'bar',
+            error: null,
           };
           const result = reducer(initialState, action);
           assert.deepEqual(result, expectedState);
@@ -59,10 +61,24 @@ describe('user reducer', () => {
         });
       });
 
-      it('with failed promise returns unmodified state', () => {
-        const action = makePackAction(LIFECYCLE.FAILURE, { type: actionType });
+      it('with failed promise returns state with an error', () => {
+        const action = makePackAction(LIFECYCLE.FAILURE,
+          {
+            type: actionType,
+            payload: {
+              response: {
+                data: {
+                  message: 'Yo, stuff is on fire.'
+                }
+              }
+            }
+          });
         const result = reducer(initialState, action);
-        assert.deepEqual(result, initialState);
+        const expectedState = {
+          ...initialState,
+          error: 'Yo, stuff is on fire.',
+        };
+        assert.deepEqual(result, expectedState);
       });
     }
   }
