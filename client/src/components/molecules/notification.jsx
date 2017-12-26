@@ -5,6 +5,7 @@ import { colors } from '../../styles/variables';
 
 const NotificationBody = glamorous.div({
   position: 'relative',
+  marginBottom: '10px',
   borderRadius: '5px',
   padding: '20px 25px',
   color: colors.paperYellow,

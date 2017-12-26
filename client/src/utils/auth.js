@@ -41,8 +41,13 @@ export function getUserData(payload) {
 }
 
 export function getErrorMessage(payload) {
-  const data = payload && payload.response && payload.response.data;
-  const { message: error } = data || {};
+  const data = (payload && payload.response && payload.response.data) || {};
+  let error;
+  if (Array.isArray(data)) {
+    error = data.map(err => err.msg);
+  } else {
+    error = [data.message || "Hm... we can't get to out server. Try again later."];
+  }
   return { error };
 }
 

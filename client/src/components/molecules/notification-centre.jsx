@@ -21,7 +21,7 @@ class NotificationCentre extends React.Component {
       <NotificationCentreContainer>
       {
         errors.filter(err => err.message).map(err => (
-          <Notification key={err.message} type="error" onDismiss={onNotificationDismiss.bind(null, err.type)}>
+          <Notification key={err.message} type="error" onDismiss={onNotificationDismiss.bind(null, err.type, err.index)}>
             {err.message}
           </Notification>
         ))
@@ -37,16 +37,17 @@ NotificationCentre.propTypes = {
 };
 
 function mapStateToProps({ user }) {
+  const userErrors = selectError(user) || [];
   const errors = [
-    { message: selectError(user), type: 'user' },
+    ...userErrors.map((err, index) => ({ message: err, index, type: 'user' })),
   ];
   return { errors };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onNotificationDismiss: function onNotificationDismiss(type) {
-      dispatch(dismissError(type));
+    onNotificationDismiss: function onNotificationDismiss(type, i) {
+      dispatch(dismissError(type, i));
     },
   };
 }

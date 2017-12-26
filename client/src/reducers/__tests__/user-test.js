@@ -9,7 +9,7 @@ describe('user reducer', () => {
   const initialState = {
     name: null,
     token: null,
-    error: null,
+    error: [],
   };
 
   it('returns unmodified state on unknown action', () => {
@@ -43,7 +43,7 @@ describe('user reducer', () => {
           const expectedState = {
             name: 'foo',
             token: 'bar',
-            error: null,
+            error: [],
           };
           const result = reducer(initialState, action);
           assert.deepEqual(result, expectedState);
@@ -76,7 +76,7 @@ describe('user reducer', () => {
         const result = reducer(initialState, action);
         const expectedState = {
           ...initialState,
-          error: 'Yo, stuff is on fire.',
+          error: ['Yo, stuff is on fire.'],
         };
         assert.deepEqual(result, expectedState);
       });
