@@ -10,6 +10,7 @@
     "build": "NODE_ENV=\"production\" webpack --progress",
     "dev": "nodemon --watch server/dist/ server/dist/server.js",
     "heroku-postbuild": "npm run build",
+    "lint": "eslint",
     "precommit": "npm test",
     "start": "node server/dist/server.js",
     "test": "mocha --require babel-register ./client/src/**/__tests__/*-test.js ./server/src/**/__tests__/*-test.js",
@@ -22,7 +23,7 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.4.1",
+    "eslint": "^4.14.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-loader": "^1.9.0",
