@@ -3,8 +3,7 @@ import { css } from 'glamor';
 import { colors } from './variables';
 
 css.global('html', {
-  height: 'auto',
-  minHeight: '100%',
+  height: '100%',
   boxSizing: 'border-box',
 });
 
@@ -13,11 +12,14 @@ css.global('*, *:before, *:after', {
 });
 
 css.global('body', {
-  minHeight: '100%',
-  backgroundImage: `linear-gradient(-135deg, ${colors.babyGreen} 0%, ${colors.aqua} 100%)`,
+  height: '100%',
   color: colors.moscowSky,
   fontFamily: "'Open Sans', sans-serif",
   fontSize: '18px',
+});
+
+css.global('#scrooge', {
+  height: '100%',
 });
 
 css.global('p', {

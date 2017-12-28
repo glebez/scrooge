@@ -5,6 +5,7 @@ import {
   withRouter,
   Redirect,
 } from 'react-router-dom';
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import Favicon from './favicon.ico'; // eslint-disable-line no-unused-vars
 import { fetchCurrencies, fetchPortfolio, dismissError } from './actions';
@@ -24,8 +25,15 @@ import PortfolioSetup from './components/pages/portfolio-setup';
 import ForgotPassword from './components/pages/forgot';
 import ResetPassword from './components/pages/reset';
 import routes from './routes';
+import { colors } from './styles/variables';
 import './styles/globals';
 
+
+const MainWrapper = glamorous.div({
+  minHeight: '100%',
+  paddingBottom: '1px', // prevent margins leaking
+  backgroundImage: `linear-gradient(-135deg, ${colors.babyGreen} 0%, ${colors.aqua} 100%)`,
+});
 class Scrooge extends React.Component {
   constructor(props) {
     super(props);
@@ -111,7 +119,7 @@ class Scrooge extends React.Component {
     const name = selectName(user);
     const username = name && name.split('@')[0];
     return (
-      <div>
+      <MainWrapper>
         <MainHeader username={username} dispatch={dispatch} />
         <Container>
           <LoadIcon isVisible={isFetching}>
@@ -149,7 +157,7 @@ class Scrooge extends React.Component {
             redirectPath={routes.login}
           />
         </Container>
-      </div>
+      </MainWrapper>
     );
   }
 }
