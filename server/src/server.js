@@ -1,11 +1,11 @@
 import Express from 'express';
 import favicon from 'serve-favicon';
-import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 import passport from 'passport';
 import expressValidator from 'express-validator';
-import routes from './routes';
 import createJWTStrategy from './handlers/passport';
+import routes from './routes';
 
 function forceSsl(req, res, next) {
   if (req.headers['x-forwarded-proto'] !== 'https') {
@@ -14,20 +14,11 @@ function forceSsl(req, res, next) {
   return next();
 }
 
-mongoose.connect(process.env.DATABASE);
-mongoose.Promise = global.Promise;
-mongoose.connection.on('error', err =>
-  console.log(`Ouch, the DB is not feeling so well: ${err.message}`),
-);
-
-require('./models/User.js');
-
 const User = mongoose.model('User');
 passport.use(User.createStrategy());
 passport.use(createJWTStrategy());
 
 const app = Express();
-const port = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production') {
   app.use(forceSsl);
@@ -45,4 +36,4 @@ app.use((err, req, res) => {
   res.status(500).send(err);
 });
 
-app.listen(port);
+export default app;
