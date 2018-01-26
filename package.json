@@ -13,6 +13,8 @@
     "lint": "eslint",
     "precommit": "npm test",
     "start": "node server/dist/server.js",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build",
     "test": "mocha --require babel-register ./client/src/**/__tests__/*-test.js ./server/src/**/__tests__/*-test.js",
     "watch-sources": "parallel-webpack --watch",
     "watch-sources:client": "webpack --watch --progress --config client/webpack.client.config.js",
@@ -33,6 +35,7 @@
     "husky": "^0.14.3",
     "mocha": "^3.5.3",
     "parallel-webpack": "^2.1.0",
+    "react-styleguidist": "^6.2.0",
     "redux-devtools": "^3.4.0",
     "sinon": "^3.3.0"
   },
